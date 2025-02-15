@@ -31,6 +31,23 @@ fee:
     collector: ${FEE_LEVEL_COLLECTOR:50000}
     addict: ${FEE_LEVEL_ADDICT:100000}
 
+# Actuator 설정
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+  health:
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

@@ -1,0 +1,10 @@
+# lifesub/deployment/manifest/configmaps/recommend-config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: recommend-config
+data:
+  SERVER_PORT: "8083"
+  POSTGRES_HOST: "recommend-postgresql"
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: "recommend"

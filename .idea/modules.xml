@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/common/lifesub.common.main.iml" filepath="$PROJECT_DIR$/.idea/modules/common/lifesub.common.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/member/lifesub.member.main.iml" filepath="$PROJECT_DIR$/.idea/modules/member/lifesub.member.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/member/lifesub.member.test.iml" filepath="$PROJECT_DIR$/.idea/modules/member/lifesub.member.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/mysub-biz/lifesub.mysub-biz.main.iml" filepath="$PROJECT_DIR$/.idea/modules/mysub-biz/lifesub.mysub-biz.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/mysub-infra/lifesub.mysub-infra.main.iml" filepath="$PROJECT_DIR$/.idea/modules/mysub-infra/lifesub.mysub-infra.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/recommend/lifesub.recommend.main.iml" filepath="$PROJECT_DIR$/.idea/modules/recommend/lifesub.recommend.main.iml" />

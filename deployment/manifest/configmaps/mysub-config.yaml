@@ -1,0 +1,13 @@
+
+# lifesub/deployment/manifest/configmaps/mysub-config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysub-config
+data:
+  SERVER_PORT: "8082"
+  POSTGRES_HOST: "mysub-postgresql"
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: "mysub"
+  FEE_LEVEL_COLLECTOR: "50000"
+  FEE_LEVEL_ADDICT: "100000"

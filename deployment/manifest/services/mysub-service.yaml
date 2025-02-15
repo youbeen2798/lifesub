@@ -1,0 +1,12 @@
+# lifesub/deployment/manifest/services/mysub-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysub
+spec:
+  selector:
+    app: mysub
+  ports:
+    - port: 80
+      targetPort: 8082
+  type: ClusterIP

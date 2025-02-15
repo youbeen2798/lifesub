@@ -1,0 +1,9 @@
+# lifesub/deployment/manifest/configmaps/common-config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: common-config
+data:
+  JPA_DDL_AUTO: update
+  JPA_SHOW_SQL: "true"
+  ALLOWED_ORIGINS: "http://lifesub-web"
