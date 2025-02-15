@@ -3,6 +3,7 @@ package com.unicorn.lifesub.member.config;
 import com.unicorn.lifesub.member.config.jwt.CustomUserDetailsService;
 import com.unicorn.lifesub.member.config.jwt.JwtAuthenticationFilter;
 import com.unicorn.lifesub.member.config.jwt.JwtTokenProvider;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +23,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
-import java.util.List;
 
+@Slf4j
 @Configuration      //Config 레이어의 클래스임을 나타내며 Bean클래스로 등록되어 실행시 자동으로 객체가 생성됨
 @EnableWebSecurity  //인증 처리 라이브러리인 Spring Security를 활성화함
 @SuppressWarnings("unused")             //unused 경고를 표시하지 않게 하는 어노테이션
@@ -78,13 +79,38 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(allowedOrigins.split(",")));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
+
+        // 허용된 origin 로깅
+        log.info("Allowed origins: {}", allowedOrigins);
+        String[] origins = allowedOrigins.split(",");
+        for (String origin : origins) {
+            log.info("Adding allowed origin: {}", origin.trim());
+            configuration.addAllowedOrigin(origin.trim());
+        }
+
+        // HTTP 메서드 설정
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+        // 헤더 설정
+        configuration.setAllowedHeaders(Arrays.asList(
+                "Authorization",
+                "Content-Type",
+                "X-Requested-With",
+                "Accept",
+                "Origin",
+                "Access-Control-Request-Method",
+                "Access-Control-Request-Headers"
+        ));
+
+        // 인증 정보 허용
         configuration.setAllowCredentials(true);
+
+        // preflight 요청의 캐시 시간 설정 (1시간)
+        configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
+
         return source;
     }
 
