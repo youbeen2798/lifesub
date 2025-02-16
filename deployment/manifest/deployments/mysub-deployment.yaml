@@ -35,21 +35,22 @@ spec:
                 name: common-secret
             - secretRef:
                 name: mysub-secret
-          #startupProbe:
-          #  tcpSocket:
-          #    port: 5432
-          #  initialDelaySeconds: 30
-          #  periodSeconds: 10
-          #  failureThreshold: 30
-          readinessProbe:
+          startupProbe:
             httpGet:
               path: /actuator/health
+              port: 8082
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 30
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
               port: 8082
             initialDelaySeconds: 10
             periodSeconds: 5
           livenessProbe:
             httpGet:
-              path: /actuator/health
+              path: /actuator/health/readiness
               port: 8082
             initialDelaySeconds: 60
             periodSeconds: 15
