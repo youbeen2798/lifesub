@@ -10,17 +10,24 @@ podTemplate(
     label: "${PIPELINE_ID}",
     serviceAccount: 'jenkins',
     containers: [
-        containerTemplate(name: 'podman', image: "mgoltzsche/podman", ttyEnabled: true, command: 'cat', privileged: true),
+        containerTemplate(name: 'podman',
+            image: "mgoltzsche/podman",
+            ttyEnabled: true,
+            command: 'cat',
+            privileged: true),
         containerTemplate(name: 'gradle',
-                        image: 'gradle:jdk17',
-                        ttyEnabled: true,
-                        command: 'cat',
-                        envVars: [
-                            envVar(key: 'DOCKER_HOST', value: 'unix:///run/podman/podman.sock'),
-                            envVar(key: 'TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE', value: '/run/podman/podman.sock'),
-                            envVar(key: 'TESTCONTAINERS_RYUK_DISABLED', value: 'true')
-                        ]),
-        containerTemplate(name: 'git', image: 'alpine/git:latest', command: 'cat', ttyEnabled: true)
+            image: 'gradle:jdk17',
+            ttyEnabled: true,
+            command: 'cat',
+            envVars: [
+                envVar(key: 'DOCKER_HOST', value: 'unix:///run/podman/podman.sock'),
+                envVar(key: 'TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE', value: '/run/podman/podman.sock'),
+                envVar(key: 'TESTCONTAINERS_RYUK_DISABLED', value: 'true')
+            ]),
+        containerTemplate(name: 'git',
+            image: 'mikefarah/yq',
+            command: 'cat',
+            ttyEnabled: true)
     ],
     volumes: [
         emptyDirVolume(mountPath: '/home/gradle/.gradle', memory: false),
@@ -31,7 +38,7 @@ podTemplate(
         def props
         def imageTag = getImageTag()
         def services = ['member', 'mysub', 'recommend']
-        def manifestRepo = 'https://github.com/cna-bootcamp/lifesub-manifest.git'
+        def manifestRepo = 'cna-bootcamp/lifesub-manifest'
         def manifestBranch = 'main'
 
         stage("Get Source") {
@@ -46,9 +53,9 @@ podTemplate(
 
             container('gradle') {
                 def testContainersConfig = '''docker.client.strategy=org.testcontainers.dockerclient.UnixSocketClientProviderStrategy
-    docker.host=unix:///run/podman/podman.sock
-    ryuk.container.privileged=true
-    testcontainers.reuse.enable=true'''
+docker.host=unix:///run/podman/podman.sock
+ryuk.container.privileged=true
+testcontainers.reuse.enable=true'''
 
                 sh """
                     # TestContainers 설정
@@ -78,10 +85,10 @@ podTemplate(
                         def jarFile = service == 'mysub' ? 'mysub.jar' : "${service}.jar"
 
                         sh """
-                            podman build \
-                                --build-arg BUILD_LIB_DIR="${buildDir}/build/libs" \
-                                --build-arg ARTIFACTORY_FILE="${jarFile}" \
-                                -f deployment/Dockerfile \
+                            podman build \\
+                                --build-arg BUILD_LIB_DIR="${buildDir}/build/libs" \\
+                                --build-arg ARTIFACTORY_FILE="${jarFile}" \\
+                                -f deployment/Dockerfile \\
                                 -t ${props.registry}/${props.image_org}/${service}:${imageTag} .
 
                             podman push ${props.registry}/${props.image_org}/${service}:${imageTag}
@@ -98,24 +105,33 @@ podTemplate(
                     usernameVariable: 'GIT_USERNAME',
                     passwordVariable: 'GIT_PASSWORD'
                 )]) {
-                    sh """
+                    // Git 설정
+                    sh '''
                         git config --global user.email "jenkins@example.com"
                         git config --global user.name "Jenkins"
+                    '''
 
-                        # Clone manifest repository
-                        git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/cna-bootcamp/lifesub-manifest.git
-                        cd lifesub-manifest
+                    // Manifest 저장소 클론
+                    sh '''
+                        rm -rf lifesub-manifest
+                        git clone https://oauth2:${GIT_PASSWORD}@github.com/${manifestRepo}.git
+                    '''
 
-                        # Update image tags in deployment files
-                        for service in ${services.join(' ')}; do
-                            sed -i 's|image: ${props.registry}/${props.image_org}/'\$service':.*|image: ${props.registry}/${props.image_org}/'\$service':${imageTag}|' lifesub/deployments/\$service-deployment.yaml
-                        done
+                    dir('lifesub-manifest') {
+                        services.each { service ->
+                            def imagePath = "${props.registry}/${props.image_org}/${service}:${imageTag}"
+                            sh """
+                                # Update image tag
+                                yq e '.spec.template.spec.containers[0].image = "${imagePath}"' -i lifesub/deployments/${service}-deployment.yaml
+                            """
+                        }
 
-                        # Commit and push changes
-                        git add .
-                        git commit -m "Update backend services images to ${imageTag}"
-                        git push origin ${manifestBranch}
-                    """
+                        sh '''
+                            git add .
+                            git diff-index --quiet HEAD || git commit -m "Update backend services images to ${imageTag}"
+                            git push origin ${manifestBranch}
+                        '''
+                    }
                 }
             }
         }
