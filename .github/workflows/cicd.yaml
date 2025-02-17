@@ -2,15 +2,17 @@ name: Backend CI/CD Pipeline
 
 on:
   push:
-    branches:
-      - k8s
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 env:
-  REGISTRY: ${{ vars.REGISTRY || 'dg0200cr.azurecr.io' }}
-  IMAGE_ORG: ${{ vars.IMAGE_ORG || 'lifesub' }}
+  JAVA_VERSION: '21'
+  GRADLE_VERSION: '8.5'
 
 jobs:
   build:
+    name: Build Applications
     runs-on: ubuntu-latest
 
     steps:
@@ -19,52 +21,60 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: ${{ env.JAVA_VERSION }}
           distribution: 'temurin'
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v3
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: ${{ env.GRADLE_VERSION }}
 
-      - name: Build applications
+      - name: Build with Gradle
         run: |
           chmod +x gradlew
           ./gradlew clean :member:build :mysub-infra:build :recommend:build
 
-      - name: Upload build artifacts
+      - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
           path: |
-            member/build/libs
-            mysub-infra/build/libs
-            recommend/build/libs
+            member/build/libs/*.jar
+            mysub-infra/build/libs/*.jar
+            recommend/build/libs/*.jar
 
   release:
+    name: Build and Push Images
     needs: build
     runs-on: ubuntu-latest
     outputs:
-      image_tag: ${{ steps.set-tag.outputs.tag }}
+      image_tag: ${{ steps.set_tag.outputs.tag }}
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download build artifacts
+      - name: Download Build Artifacts
         uses: actions/download-artifact@v4
         with:
           name: build-artifacts
 
-      - name: Set timestamp for image tag
-        id: set-tag
-        run: echo "tag=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
+      - name: Load Environment Variables
+        run: source deployment/deploy_env_vars
+
+      - name: Generate Image Tag
+        id: set_tag
+        run: |
+          tag=$(date +'%Y%m%d%H%M%S')
+          echo "tag=${tag}" >> $GITHUB_OUTPUT
 
       - name: Login to Azure Container Registry
         uses: azure/docker-login@v1
         with:
-          login-server: ${{ env.REGISTRY }}
+          login-server: ${{ env.registry }}
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
-      - name: Build and push images
+      - name: Build and Push Images
         run: |
           for service in member mysub recommend; do
             build_dir=$([[ "$service" == "mysub" ]] && echo "mysub-infra" || echo "$service")
@@ -74,49 +84,52 @@ jobs:
               --build-arg BUILD_LIB_DIR="${build_dir}/build/libs" \
               --build-arg ARTIFACTORY_FILE="${jar_file}" \
               -f deployment/Dockerfile \
-              -t ${{ env.REGISTRY }}/${{ env.IMAGE_ORG }}/${service}:${{ steps.set-tag.outputs.tag }} .
+              -t ${registry}/${image_org}/${service}:${{ steps.set_tag.outputs.tag }} .
           
-            docker push ${{ env.REGISTRY }}/${{ env.IMAGE_ORG }}/${service}:${{ steps.set-tag.outputs.tag }}
+            docker push ${registry}/${image_org}/${service}:${{ steps.set_tag.outputs.tag }}
           done
 
   deploy:
+    name: Deploy to AKS
     needs: release
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Azure login
+      - name: Load Environment Variables
+        run: source deployment/deploy_env_vars
+
+      - name: Azure Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Set AKS context
-        uses: azure/aks-set-context@v3
+      - name: Set AKS Context
+        uses: azure/aks-set-context@v1
         with:
           resource-group: ictcoe-edu
-          cluster-name: dg0200-aks
+          cluster-name: ${{ env.teamid }}-aks
 
-      - name: Load environment variables
-        run: source deployment/deploy_env_vars
-
-      - name: Generate manifest
+      - name: Create Namespace
         run: |
-          export namespace=dg0200-lifesub-ns
-          export allowed_origins=http://4.230.156.229
-          export jwt_secret_key=${{ secrets.JWT_SECRET_KEY }}
-          export postgres_user=${{ secrets.POSTGRES_USER }}
-          export postgres_password=${{ secrets.POSTGRES_PASSWORD }}
-          export replicas=2
-          export resources_requests_cpu=256m
-          export resources_requests_memory=256Mi
-          export resources_limits_cpu=1024m
-          export resources_limits_memory=1024Mi
-          
-          # Set image paths with tag from release job
-          export member_image_path=${{ env.REGISTRY }}/${{ env.IMAGE_ORG }}/member:${{ needs.release.outputs.image_tag }}
-          export mysub_image_path=${{ env.REGISTRY }}/${{ env.IMAGE_ORG }}/mysub:${{ needs.release.outputs.image_tag }}
-          export recommend_image_path=${{ env.REGISTRY }}/${{ env.IMAGE_ORG }}/recommend:${{ needs.release.outputs.image_tag }}
+          kubectl create namespace ${teamid}-${root_project}-ns --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Generate Manifest
+        run: |
+          export namespace=${teamid}-${root_project}-ns
+          export allowed_origins=${allowed_origins}
+          export jwt_secret_key=${jwt_secret_key}
+          export postgres_user=${postgres_user}
+          export postgres_password=${postgres_password}
+          export replicas=${replicas}
+          export resources_requests_cpu=${resources_requests_cpu}
+          export resources_requests_memory=${resources_requests_memory}
+          export resources_limits_cpu=${resources_limits_cpu}
+          export resources_limits_memory=${resources_limits_memory}
+          export member_image_path=${registry}/${image_org}/member:${{ needs.release.outputs.image_tag }}
+          export mysub_image_path=${registry}/${image_org}/mysub:${{ needs.release.outputs.image_tag }}
+          export recommend_image_path=${registry}/${image_org}/recommend:${{ needs.release.outputs.image_tag }}
           
           envsubst < deployment/deploy.yaml.template > deployment/deploy.yaml
           cat deployment/deploy.yaml
@@ -126,6 +139,6 @@ jobs:
           kubectl apply -f deployment/deploy.yaml
           
           echo "Waiting for deployments to be ready..."
-          kubectl -n dg0200-lifesub-ns wait --for=condition=available deployment/member --timeout=300s
-          kubectl -n dg0200-lifesub-ns wait --for=condition=available deployment/mysub --timeout=300s
-          kubectl -n dg0200-lifesub-ns wait --for=condition=available deployment/recommend --timeout=300s
+          kubectl -n ${namespace} wait --for=condition=available deployment/member --timeout=300s
+          kubectl -n ${namespace} wait --for=condition=available deployment/mysub --timeout=300s
+          kubectl -n ${namespace} wait --for=condition=available deployment/recommend --timeout=300s
