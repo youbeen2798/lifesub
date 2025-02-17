@@ -10,14 +10,22 @@ podTemplate(
     label: "${PIPELINE_ID}",
     serviceAccount: 'jenkins',
     containers: [
-        containerTemplate(name: 'gradle', image: 'gradle:jdk17', ttyEnabled: true, command: 'cat'),
+        containerTemplate(name: 'gradle',
+                        image: 'gradle:jdk17',
+                        ttyEnabled: true,
+                        command: 'cat',
+                        envVars: [
+                            envVar(key: 'DOCKER_HOST', value: 'unix:///run/podman/podman.sock'),
+                            envVar(key: 'TESTCONTAINERS_RYUK_DISABLED', value: 'true')
+                        ]),
         containerTemplate(name: 'podman', image: "mgoltzsche/podman", ttyEnabled: true, command: 'cat', privileged: true),
         containerTemplate(name: 'azure-cli', image: 'hiondal/azure-kubectl:latest', command: 'cat', ttyEnabled: true),
         containerTemplate(name: 'envsubst', image: "hiondal/envsubst", command: 'sleep', args: '1h')
     ],
     volumes: [
         emptyDirVolume(mountPath: '/home/gradle/.gradle', memory: false),
-        emptyDirVolume(mountPath: '/root/.azure', memory: false)
+        emptyDirVolume(mountPath: '/root/.azure', memory: false),
+        emptyDirVolume(mountPath: '/run/podman', memory: false)
     ]
 ) {
     node(PIPELINE_ID) {
@@ -44,17 +52,25 @@ podTemplate(
             }
         }
 
+        stage('Initialize Podman') {
+            container('podman') {
+                sh '''
+                    podman system service -t 0 unix:///run/podman/podman.sock &
+                    sleep 5
+                '''
+            }
+        }
+
         stage('Setup TestContainers') {
             container('gradle') {
-                // 모든 서비스에 대해 testcontainers.properties 생성
                 sh """
-                    # 각 서비스의 test/resources 디렉토리 생성
                     for service in member mysub-infra recommend; do
                         mkdir -p \${service}/src/test/resources
                         cat << EOF > \${service}/src/test/resources/testcontainers.properties
 docker.client.strategy=org.testcontainers.dockerclient.UnixSocketClientProviderStrategy
 docker.host=unix:///run/podman/podman.sock
 ryuk.container.privileged=true
+testcontainers.reuse.enable=true
 EOF
                     done
                 """
@@ -64,6 +80,9 @@ EOF
         stage('Build Applications') {
             container('gradle') {
                 sh """
+                    export DOCKER_HOST=unix:///run/podman/podman.sock
+                    export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/run/podman/podman.sock
+
                     chmod +x gradlew
                     ./gradlew :member:clean :member:build
                     ./gradlew :mysub-infra:clean :mysub-infra:build
