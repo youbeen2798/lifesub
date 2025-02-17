@@ -10,16 +10,6 @@ podTemplate(
     label: "${PIPELINE_ID}",
     serviceAccount: 'jenkins',
     containers: [
-    /*
-        containerTemplate(name: 'gradle',
-                        image: 'gradle:jdk17',
-                        ttyEnabled: true,
-                        command: 'cat',
-                        envVars: [
-                            envVar(key: 'DOCKER_HOST', value: 'unix:///run/podman/podman.sock'),
-                            envVar(key: 'TESTCONTAINERS_RYUK_DISABLED', value: 'true')
-                        ]),
-    */
         containerTemplate(name: 'gradle', image: 'gradle:jdk17', ttyEnabled: true, command: 'cat'),
         containerTemplate(name: 'podman', image: "mgoltzsche/podman", ttyEnabled: true, command: 'cat', privileged: true),
         containerTemplate(name: 'azure-cli', image: 'hiondal/azure-kubectl:latest', command: 'cat', ttyEnabled: true),
@@ -135,15 +125,13 @@ EOF
                     export resources_requests_memory=${props.resources_requests_memory}
                     export resources_limits_cpu=${props.resources_limits_cpu}
                     export resources_limits_memory=${props.resources_limits_memory}
-                """
 
-                services.each { service ->
-                    sh """
-                        export ${service}_image_path=${props.registry}/${props.image_org}/${service}:${imageTag}
-                    """
-                }
+                    # 이미지 경로 환경변수 설정
+                    export member_image_path=${props.registry}/${props.image_org}/member:${imageTag}
+                    export mysub_image_path=${props.registry}/${props.image_org}/mysub:${imageTag}
+                    export recommend_image_path=${props.registry}/${props.image_org}/recommend:${imageTag}
 
-                sh """
+                    # manifest 생성
                     envsubst < deployment/${manifest}.template > deployment/${manifest}
                     cat deployment/${manifest}
                 """
