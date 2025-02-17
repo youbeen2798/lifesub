@@ -10,6 +10,7 @@ podTemplate(
     label: "${PIPELINE_ID}",
     serviceAccount: 'jenkins',
     containers: [
+    /*
         containerTemplate(name: 'gradle',
                         image: 'gradle:jdk17',
                         ttyEnabled: true,
@@ -18,6 +19,8 @@ podTemplate(
                             envVar(key: 'DOCKER_HOST', value: 'unix:///run/podman/podman.sock'),
                             envVar(key: 'TESTCONTAINERS_RYUK_DISABLED', value: 'true')
                         ]),
+    */
+        containerTemplate(name: 'gradle', image: 'gradle:jdk17', ttyEnabled: true, command: 'cat'),
         containerTemplate(name: 'podman', image: "mgoltzsche/podman", ttyEnabled: true, command: 'cat', privileged: true),
         containerTemplate(name: 'azure-cli', image: 'hiondal/azure-kubectl:latest', command: 'cat', ttyEnabled: true),
         containerTemplate(name: 'envsubst', image: "hiondal/envsubst", command: 'sleep', args: '1h')
@@ -33,6 +36,7 @@ podTemplate(
         def imageTag = getImageTag()
         def manifest = "deploy.yaml"
         def namespace
+        def services = ['member', 'mysub', 'recommend']
 
         stage("Get Source") {
             checkout scm
@@ -98,8 +102,6 @@ EOF
                     usernameVariable: 'USERNAME',
                     passwordVariable: 'PASSWORD'
                 )]) {
-                    def services = ['member', 'mysub', 'recommend']
-
                     sh "podman login ${props.registry} --username \$USERNAME --password \$PASSWORD"
 
                     services.each { service ->
