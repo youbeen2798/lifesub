@@ -119,7 +119,8 @@ testcontainers.reuse.enable=true'''
 
                     sh """
                         rm -rf lifesub-manifest
-                        git clone https://oauth2:${GIT_PASSWORD}@github.com/${manifestRepo}.git
+                        #git clone https://oauth2:${GIT_PASSWORD}@github.com/${manifestRepo}.git
+                        git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${manifestRepo}.git
                     """
 
                     dir('lifesub-manifest') {
