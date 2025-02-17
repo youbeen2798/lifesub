@@ -51,13 +51,26 @@ podTemplate(
             }
         }
 
+        stage('Setup TestContainers') {
+            container('gradle') {
+                // 모든 서비스에 대해 testcontainers.properties 생성
+                sh """
+                    # 각 서비스의 test/resources 디렉토리 생성
+                    for service in member mysub-infra recommend; do
+                        mkdir -p \${service}/src/test/resources
+                        cat << EOF > \${service}/src/test/resources/testcontainers.properties
+docker.client.strategy=org.testcontainers.dockerclient.UnixSocketClientProviderStrategy
+docker.host=unix:///run/podman/podman.sock
+ryuk.container.privileged=true
+EOF
+                    done
+                """
+            }
+        }
+
         stage('Build Applications') {
             container('gradle') {
-                // TestContainers가 Podman을 사용하도록 설정
                 sh """
-                    export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/run/podman/podman.sock
-                    export DOCKER_HOST=unix:///run/podman/podman.sock
-
                     chmod +x gradlew
                     ./gradlew :member:clean :member:build
                     ./gradlew :mysub-infra:clean :mysub-infra:build
