@@ -10,20 +10,14 @@ podTemplate(
     label: "${PIPELINE_ID}",
     serviceAccount: 'jenkins',
     containers: [
-        containerTemplate(name: "docker", image: "docker:latest", privileged: true, ttyEnabled: true, command: "cat"),
-        containerTemplate(name: 'gradle', image: 'gradle:jdk17', ttyEnabled: true, command: 'cat'),
-        /*
-        containerTemplate(
-            name: 'gradle',
-            image: 'gradle:jdk17',
-            ttyEnabled: true,
-            command: 'cat',
-            privileged: true,
-            volumes: [
-                hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
-            ]
-        ),
-        */
+        containerTemplate(name: 'gradle',
+                        image: 'gradle:jdk17',
+                        ttyEnabled: true,
+                        command: 'cat',
+                        envVars: [
+                            envVar(key: 'DOCKER_HOST', value: 'unix:///run/podman/podman.sock'),
+                            envVar(key: 'TESTCONTAINERS_RYUK_DISABLED', value: 'true')
+                        ]),
         containerTemplate(name: 'podman', image: "mgoltzsche/podman", ttyEnabled: true, command: 'cat', privileged: true),
         containerTemplate(name: 'azure-cli', image: 'hiondal/azure-kubectl:latest', command: 'cat', ttyEnabled: true),
         containerTemplate(name: 'envsubst', image: "hiondal/envsubst", command: 'sleep', args: '1h')
@@ -59,13 +53,11 @@ podTemplate(
 
         stage('Build Applications') {
             container('gradle') {
-                // TestContainer를 위한 Docker 데몬 실행
+                // TestContainers가 Podman을 사용하도록 설정
                 sh """
-                    dockerd &
-                    sleep 10
-                """
+                    export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/run/podman/podman.sock
+                    export DOCKER_HOST=unix:///run/podman/podman.sock
 
-                sh """
                     chmod +x gradlew
                     ./gradlew :member:clean :member:build
                     ./gradlew :mysub-infra:clean :mysub-infra:build
