@@ -1,0 +1,2114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - MemberE2ETest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>MemberE2ETest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.unicorn.lifesub.member.test.e2e.html">com.unicorn.lifesub.member.test.e2e</a> &gt; MemberE2ETest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">3</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">1.379s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+<li>
+<a href="#tab2">Standard error</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Method name</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">잘못된 비밀번호로 로그인 실패 시나리오</td>
+<td class="success">givenInvalidPassword_whenLogin_thenFail()</td>
+<td class="success">0.202s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">로그인 성공 시나리오</td>
+<td class="success">givenValidCredentials_whenLogin_thenSuccess()</td>
+<td class="success">0.929s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">로그인 후 로그아웃 시나리오</td>
+<td class="success">givenValidToken_whenLogout_thenSuccess()</td>
+<td class="success">0.248s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>00:44:02.673 [Test worker] INFO org.testcontainers.images.PullPolicy -- Image pull policy will be performed by: DefaultPullPolicy()
+00:44:02.675 [Test worker] INFO org.testcontainers.utility.ImageNameSubstitutor -- Image name substitution will be performed by: DefaultImageNameSubstitutor (composite of 'ConfigurationFileImageNameSubstitutor' and 'PrefixingImageNameSubstitutor')
+00:44:02.681 [Test worker] INFO org.testcontainers.DockerClientFactory -- Testcontainers version: 1.20.4
+00:44:02.807 [Test worker] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Loaded org.testcontainers.dockerclient.NpipeSocketClientProviderStrategy from ~/.testcontainers.properties, will try it first
+00:44:02.975 [Test worker] INFO org.testcontainers.dockerclient.DockerClientProviderStrategy -- Found Docker environment with local Npipe socket (npipe:////./pipe/docker_engine)
+00:44:02.975 [Test worker] INFO org.testcontainers.DockerClientFactory -- Docker host IP address is localhost
+00:44:02.992 [Test worker] INFO org.testcontainers.DockerClientFactory -- Connected to docker: 
+  Server Version: 27.5.1
+  API Version: 1.47
+  Operating System: Docker Desktop
+  Total Memory: 15853 MB
+  Labels: 
+    com.docker.desktop.address=npipe://\\.\pipe\docker_cli
+00:44:03.035 [Test worker] INFO tc.testcontainers/ryuk:0.11.0 -- Creating container for image: testcontainers/ryuk:0.11.0
+00:44:03.231 [Test worker] INFO tc.testcontainers/ryuk:0.11.0 -- Container testcontainers/ryuk:0.11.0 is starting: 636e56dbfb899f24bd734f0d8a6c1cdeb52312fda541ca7723cc76a86e73e616
+00:44:03.542 [Test worker] INFO tc.testcontainers/ryuk:0.11.0 -- Container testcontainers/ryuk:0.11.0 started in PT0.5075575S
+00:44:03.545 [Test worker] INFO org.testcontainers.utility.RyukResourceReaper -- Ryuk started - will monitor and terminate Testcontainers containers on JVM exit
+00:44:03.546 [Test worker] INFO org.testcontainers.DockerClientFactory -- Checking the system...
+00:44:03.546 [Test worker] INFO org.testcontainers.DockerClientFactory -- ✔︎ Docker server version should be at least 1.6.0
+00:44:03.546 [Test worker] INFO tc.postgres:13.2-alpine -- Creating container for image: postgres:13.2-alpine
+00:44:03.602 [Test worker] INFO tc.postgres:13.2-alpine -- Container postgres:13.2-alpine is starting: d841e59c36d3d99da0265bf22f454992e2693812427daaf6a7a27c76bf270e7d
+00:44:04.653 [Test worker] INFO tc.postgres:13.2-alpine -- Container postgres:13.2-alpine started in PT1.1062361S
+00:44:04.653 [Test worker] INFO tc.postgres:13.2-alpine -- Container is started (JDBC URL: jdbc:postgresql://localhost:63856/testdb?loggerLevel=OFF)
+00:44:04.703 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.unicorn.lifesub.member.test.e2e.MemberE2ETest]: MemberE2ETest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+00:44:04.770 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.unicorn.lifesub.member.MemberApplication for test class com.unicorn.lifesub.member.test.e2e.MemberE2ETest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.0)
+
+2025-02-18T00:44:05.041+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.l.member.test.e2e.MemberE2ETest      : Starting MemberE2ETest using Java 23.0.2 with PID 44492 (started by hiond in C:\home\workspace\lifesub\member)
+2025-02-18T00:44:05.041+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] c.u.l.member.test.e2e.MemberE2ETest      : Running with Spring Boot v3.4.0, Spring v6.2.0
+2025-02-18T00:44:05.042+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.l.member.test.e2e.MemberE2ETest      : The following 1 profile is active: &quot;e2e-test&quot;
+2025-02-18T00:44:05.816+09:00  INFO 44492 --- [member-service-test] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-02-18T00:44:05.903+09:00  INFO 44492 --- [member-service-test] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 80 ms. Found 1 JPA repository interface.
+2025-02-18T00:44:06.808+09:00  INFO 44492 --- [member-service-test] [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 0 (http)
+2025-02-18T00:44:06.836+09:00  INFO 44492 --- [member-service-test] [    Test worker] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-02-18T00:44:06.837+09:00  INFO 44492 --- [member-service-test] [    Test worker] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.33]
+2025-02-18T00:44:06.917+09:00  INFO 44492 --- [member-service-test] [    Test worker] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-02-18T00:44:06.918+09:00  INFO 44492 --- [member-service-test] [    Test worker] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1864 ms
+2025-02-18T00:44:07.757+09:00  INFO 44492 --- [member-service-test] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-02-18T00:44:08.001+09:00  INFO 44492 --- [member-service-test] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.2.Final
+2025-02-18T00:44:08.041+09:00  INFO 44492 --- [member-service-test] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-02-18T00:44:08.283+09:00  INFO 44492 --- [member-service-test] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-02-18T00:44:08.321+09:00  INFO 44492 --- [member-service-test] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-02-18T00:44:08.447+09:00  INFO 44492 --- [member-service-test] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@56f4f385
+2025-02-18T00:44:08.450+09:00  INFO 44492 --- [member-service-test] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-02-18T00:44:08.488+09:00  WARN 44492 --- [member-service-test] [    Test worker] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-02-18T00:44:08.510+09:00  INFO 44492 --- [member-service-test] [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 13.2
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-02-18T00:44:09.148+09:00  INFO 44492 --- [member-service-test] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-02-18T00:44:09.158+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    set client_min_messages = WARNING
+Hibernate: 
+    set client_min_messages = WARNING
+2025-02-18T00:44:09.164+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists member_roles 
+       drop constraint if exists FKkrahbaoj05n0hyabejnnrmft
+Hibernate: 
+    alter table if exists member_roles 
+       drop constraint if exists FKkrahbaoj05n0hyabejnnrmft
+2025-02-18T00:44:09.168+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists member_roles cascade
+Hibernate: 
+    drop table if exists member_roles cascade
+2025-02-18T00:44:09.169+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    drop table if exists members cascade
+Hibernate: 
+    drop table if exists members cascade
+2025-02-18T00:44:09.174+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    create table member_roles (
+        role varchar(255),
+        user_id varchar(255) not null
+    )
+Hibernate: 
+    create table member_roles (
+        role varchar(255),
+        user_id varchar(255) not null
+    )
+2025-02-18T00:44:09.177+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    create table members (
+        created_at timestamp(6),
+        updated_at timestamp(6),
+        password varchar(255) not null,
+        user_id varchar(255) not null,
+        user_name varchar(255) not null,
+        primary key (user_id)
+    )
+Hibernate: 
+    create table members (
+        created_at timestamp(6),
+        updated_at timestamp(6),
+        password varchar(255) not null,
+        user_id varchar(255) not null,
+        user_name varchar(255) not null,
+        primary key (user_id)
+    )
+2025-02-18T00:44:09.181+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    alter table if exists member_roles 
+       add constraint FKkrahbaoj05n0hyabejnnrmft 
+       foreign key (user_id) 
+       references members
+Hibernate: 
+    alter table if exists member_roles 
+       add constraint FKkrahbaoj05n0hyabejnnrmft 
+       foreign key (user_id) 
+       references members
+2025-02-18T00:44:09.187+09:00  INFO 44492 --- [member-service-test] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-02-18T00:44:09.789+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] SecurityConfig$$SpringCGLIB$$0.passwordEncoder - Args: []
+2025-02-18T00:44:09.790+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] SecurityConfig$$SpringCGLIB$$0.passwordEncoder - Result: org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder@1e275478
+2025-02-18T00:44:10.061+09:00  WARN 44492 --- [member-service-test] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-02-18T00:44:10.116+09:00  INFO 44492 --- [member-service-test] [    Test worker] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-02-18T00:44:10.828+09:00  INFO 44492 --- [member-service-test] [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 3 endpoints beneath base path '/actuator'
+2025-02-18T00:44:10.857+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] SecurityConfig$$SpringCGLIB$$0.securityFilterChain - Args: [org.springframework.security.config.annotation.web.builders.HttpSecurity@644867]
+2025-02-18T00:44:10.858+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] SecurityConfig$$SpringCGLIB$$0.corsConfigurationSource - Args: []
+2025-02-18T00:44:10.859+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] SecurityConfig$$SpringCGLIB$$0.corsConfigurationSource - Result: org.springframework.web.cors.UrlBasedCorsConfigurationSource@6626137e
+2025-02-18T00:44:10.999+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] SecurityConfig$$SpringCGLIB$$0.securityFilterChain - Result: DefaultSecurityFilterChain matching [any request] and having filters [DisableEncodeUrl, WebAsyncManagerIntegration, SecurityContextHolder, HeaderWriter, Cors, Logout, JwtAuthentication, RequestCacheAware, SecurityContextHolderAwareRequest, AnonymousAuthentication, SessionManagement, ExceptionTranslation, Authorization]
+2025-02-18T00:44:11.040+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] SecurityConfig$$SpringCGLIB$$0.authenticationManager - Args: [org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration@3298e]
+2025-02-18T00:44:11.040+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] SecurityConfig$$SpringCGLIB$$0.authenticationManager - Result: org.springframework.security.authentication.ProviderManager@5c3b3f04
+2025-02-18T00:44:11.041+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] SwaggerConfig$$SpringCGLIB$$0.openAPI - Args: []
+2025-02-18T00:44:11.041+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] SwaggerConfig$$SpringCGLIB$$0.openAPI - Result: class OpenAPI {
+    openapi: 3.0.1
+    info: class Info {
+        title: 회원 서비스 API
+        description: 회원 서비스 API 명세서입니다.
+        summary: null
+        termsOfService: null
+        contact: null
+        license: null
+        version: v1.0.0
+    }
+    externalDocs: null
+    servers: null
+    security: null
+    tags: null
+    paths: null
+    components: null
+}
+2025-02-18T00:44:12.056+09:00  INFO 44492 --- [member-service-test] [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 63867 (http) with context path '/'
+2025-02-18T00:44:12.071+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.l.member.test.e2e.MemberE2ETest      : Started MemberE2ETest in 7.224 seconds (process running for 9.979)
+2025-02-18T00:44:12.140+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] DataLoader.run - Args: [[Ljava.lang.String;@15a3b]
+2025-02-18T00:44:12.141+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.count - Args: []
+2025-02-18T00:44:12.515+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        count(*) 
+    from
+        members me1_0
+Hibernate: 
+    select
+        count(*) 
+    from
+        members me1_0
+2025-02-18T00:44:12.532+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.count - Result: 0
+2025-02-18T00:44:12.586+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.save - Args: [com.unicorn.lifesub.member.repository.entity.MemberEntity@16c649]
+2025-02-18T00:44:12.597+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+Hibernate: 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+2025-02-18T00:44:12.632+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.save - Result: com.unicorn.lifesub.member.repository.entity.MemberEntity@4b17474d
+2025-02-18T00:44:12.632+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.save - Args: [com.unicorn.lifesub.member.repository.entity.MemberEntity@799c1]
+2025-02-18T00:44:12.633+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+Hibernate: 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+2025-02-18T00:44:12.635+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.save - Result: com.unicorn.lifesub.member.repository.entity.MemberEntity@31c8bd8b
+2025-02-18T00:44:12.635+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.save - Args: [com.unicorn.lifesub.member.repository.entity.MemberEntity@4fe123]
+2025-02-18T00:44:12.635+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+Hibernate: 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+2025-02-18T00:44:12.638+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.save - Result: com.unicorn.lifesub.member.repository.entity.MemberEntity@1955f4aa
+2025-02-18T00:44:12.638+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.save - Args: [com.unicorn.lifesub.member.repository.entity.MemberEntity@3ce524]
+2025-02-18T00:44:12.638+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+Hibernate: 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+2025-02-18T00:44:12.640+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.save - Result: com.unicorn.lifesub.member.repository.entity.MemberEntity@378a5302
+2025-02-18T00:44:12.640+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.save - Args: [com.unicorn.lifesub.member.repository.entity.MemberEntity@2737fd]
+2025-02-18T00:44:12.641+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+Hibernate: 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+2025-02-18T00:44:12.643+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.save - Result: com.unicorn.lifesub.member.repository.entity.MemberEntity@62b0059
+2025-02-18T00:44:12.643+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.save - Args: [com.unicorn.lifesub.member.repository.entity.MemberEntity@59af82]
+2025-02-18T00:44:12.644+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+Hibernate: 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+2025-02-18T00:44:12.645+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.save - Result: com.unicorn.lifesub.member.repository.entity.MemberEntity@50231f16
+2025-02-18T00:44:12.646+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.save - Args: [com.unicorn.lifesub.member.repository.entity.MemberEntity@685351]
+2025-02-18T00:44:12.646+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+Hibernate: 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+2025-02-18T00:44:12.648+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.save - Result: com.unicorn.lifesub.member.repository.entity.MemberEntity@42542698
+2025-02-18T00:44:12.648+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.save - Args: [com.unicorn.lifesub.member.repository.entity.MemberEntity@151ddf]
+2025-02-18T00:44:12.648+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+Hibernate: 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+2025-02-18T00:44:12.650+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.save - Result: com.unicorn.lifesub.member.repository.entity.MemberEntity@50caf658
+2025-02-18T00:44:12.650+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.save - Args: [com.unicorn.lifesub.member.repository.entity.MemberEntity@207d6c]
+2025-02-18T00:44:12.651+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+Hibernate: 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+2025-02-18T00:44:12.653+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.save - Result: com.unicorn.lifesub.member.repository.entity.MemberEntity@6f6cefb9
+2025-02-18T00:44:12.653+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.save - Args: [com.unicorn.lifesub.member.repository.entity.MemberEntity@2e5fe]
+2025-02-18T00:44:12.653+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+Hibernate: 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+2025-02-18T00:44:12.656+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.save - Result: com.unicorn.lifesub.member.repository.entity.MemberEntity@27d58238
+2025-02-18T00:44:12.656+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] DataLoader.run - Result: null
+2025-02-18T00:44:12.667+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-02-18T00:44:12.672+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-02-18T00:44:12.674+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-02-18T00:44:12.676+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-02-18T00:44:12.677+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-02-18T00:44:12.679+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-02-18T00:44:12.680+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-02-18T00:44:12.681+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-02-18T00:44:12.683+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-02-18T00:44:12.684+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-02-18T00:44:12.687+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+2025-02-18T00:44:12.688+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+2025-02-18T00:44:12.690+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+2025-02-18T00:44:12.691+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+2025-02-18T00:44:12.692+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+2025-02-18T00:44:12.693+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+2025-02-18T00:44:12.694+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+2025-02-18T00:44:12.696+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+2025-02-18T00:44:12.697+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+2025-02-18T00:44:12.698+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+2025-02-18T00:44:13.085+09:00  INFO 44492 --- [member-service-test] [    Test worker] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring TestDispatcherServlet ''
+2025-02-18T00:44:13.085+09:00  INFO 44492 --- [member-service-test] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-02-18T00:44:13.085+09:00  INFO 44492 --- [member-service-test] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2025-02-18T00:44:13.092+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.deleteAll - Args: []
+2025-02-18T00:44:13.101+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0
+Hibernate: 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0
+2025-02-18T00:44:13.109+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+2025-02-18T00:44:13.112+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+2025-02-18T00:44:13.113+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+2025-02-18T00:44:13.114+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+2025-02-18T00:44:13.116+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+2025-02-18T00:44:13.117+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+2025-02-18T00:44:13.118+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+2025-02-18T00:44:13.120+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+2025-02-18T00:44:13.121+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+2025-02-18T00:44:13.122+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+2025-02-18T00:44:13.127+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+2025-02-18T00:44:13.129+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+2025-02-18T00:44:13.130+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+2025-02-18T00:44:13.131+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+2025-02-18T00:44:13.132+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+2025-02-18T00:44:13.133+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+2025-02-18T00:44:13.134+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+2025-02-18T00:44:13.135+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+2025-02-18T00:44:13.135+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+2025-02-18T00:44:13.136+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+2025-02-18T00:44:13.138+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+2025-02-18T00:44:13.141+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+2025-02-18T00:44:13.142+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+2025-02-18T00:44:13.143+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+2025-02-18T00:44:13.144+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+2025-02-18T00:44:13.145+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+2025-02-18T00:44:13.147+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+2025-02-18T00:44:13.149+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+2025-02-18T00:44:13.150+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+2025-02-18T00:44:13.151+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+2025-02-18T00:44:13.153+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.deleteAll - Result: null
+2025-02-18T00:44:13.153+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] TestDataManager.setupTestData - Args: []
+2025-02-18T00:44:13.154+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.count - Args: []
+2025-02-18T00:44:13.154+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        count(*) 
+    from
+        members me1_0
+Hibernate: 
+    select
+        count(*) 
+    from
+        members me1_0
+2025-02-18T00:44:13.156+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.count - Result: 0
+2025-02-18T00:44:13.205+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.save - Args: [com.unicorn.lifesub.member.repository.entity.MemberEntity@b1068]
+2025-02-18T00:44:13.206+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+Hibernate: 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+2025-02-18T00:44:13.209+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.save - Result: com.unicorn.lifesub.member.repository.entity.MemberEntity@7d85b71b
+2025-02-18T00:44:13.257+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.save - Args: [com.unicorn.lifesub.member.repository.entity.MemberEntity@c56c2]
+2025-02-18T00:44:13.259+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+Hibernate: 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+2025-02-18T00:44:13.261+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.save - Result: com.unicorn.lifesub.member.repository.entity.MemberEntity@316b57e0
+2025-02-18T00:44:13.261+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] TestDataManager.setupTestData - Result: null
+2025-02-18T00:44:13.261+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-02-18T00:44:13.263+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-02-18T00:44:13.265+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+2025-02-18T00:44:13.266+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+2025-02-18T00:44:13.352+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] JwtTokenProvider.resolveToken - Args: [org.springframework.security.web.header.HeaderWriterFilter$HeaderWriterRequest@14decb]
+2025-02-18T00:44:13.352+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] JwtTokenProvider.resolveToken - Result: null
+2025-02-18T00:44:13.436+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] MemberController.login - Args: [com.unicorn.lifesub.member.dto.LoginRequest@35fdc9]
+2025-02-18T00:44:13.437+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] MemberServiceImpl.login - Args: [com.unicorn.lifesub.member.dto.LoginRequest@35fdc9]
+2025-02-18T00:44:13.439+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.findByUserId - Args: [testuser]
+2025-02-18T00:44:13.455+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    where
+        me1_0.user_id=?
+Hibernate: 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    where
+        me1_0.user_id=?
+2025-02-18T00:44:13.460+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+2025-02-18T00:44:13.463+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.findByUserId - Result: Optional[com.unicorn.lifesub.member.repository.entity.MemberEntity@d13ba95]
+2025-02-18T00:44:13.518+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] JwtTokenProvider.createToken - Args: [com.unicorn.lifesub.member.repository.entity.MemberEntity@d13ba951 elements]
+2025-02-18T00:44:13.528+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] JwtTokenProvider.createToken - Result: com.unicorn.lifesub.common.dto.JwtTokenDTO@6a5f9cdb
+2025-02-18T00:44:13.528+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] MemberServiceImpl.login - Result: com.unicorn.lifesub.common.dto.JwtTokenDTO@6a5f9cdb
+2025-02-18T00:44:13.531+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] MemberController.login - Result: &lt;200 OK OK,com.unicorn.lifesub.common.dto.ApiResponse@1f489987,[]&gt;
+2025-02-18T00:44:13.637+09:00  INFO 44492 --- [member-service-test] [    Test worker] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring TestDispatcherServlet ''
+2025-02-18T00:44:13.637+09:00  INFO 44492 --- [member-service-test] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-02-18T00:44:13.639+09:00  INFO 44492 --- [member-service-test] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2025-02-18T00:44:13.639+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.deleteAll - Args: []
+2025-02-18T00:44:13.640+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0
+Hibernate: 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0
+2025-02-18T00:44:13.642+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+2025-02-18T00:44:13.644+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+2025-02-18T00:44:13.646+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+2025-02-18T00:44:13.647+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+2025-02-18T00:44:13.649+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+2025-02-18T00:44:13.650+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+2025-02-18T00:44:13.652+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.deleteAll - Result: null
+2025-02-18T00:44:13.653+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] TestDataManager.setupTestData - Args: []
+2025-02-18T00:44:13.653+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.count - Args: []
+2025-02-18T00:44:13.653+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        count(*) 
+    from
+        members me1_0
+Hibernate: 
+    select
+        count(*) 
+    from
+        members me1_0
+2025-02-18T00:44:13.655+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.count - Result: 0
+2025-02-18T00:44:13.711+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.save - Args: [com.unicorn.lifesub.member.repository.entity.MemberEntity@46e5c3]
+2025-02-18T00:44:13.712+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+Hibernate: 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+2025-02-18T00:44:13.714+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.save - Result: com.unicorn.lifesub.member.repository.entity.MemberEntity@2506cf0d
+2025-02-18T00:44:13.772+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.save - Args: [com.unicorn.lifesub.member.repository.entity.MemberEntity@4ba361]
+2025-02-18T00:44:13.772+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+Hibernate: 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+2025-02-18T00:44:13.775+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.save - Result: com.unicorn.lifesub.member.repository.entity.MemberEntity@6065f14f
+2025-02-18T00:44:13.775+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] TestDataManager.setupTestData - Result: null
+2025-02-18T00:44:13.776+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-02-18T00:44:13.778+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-02-18T00:44:13.780+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+2025-02-18T00:44:13.782+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+2025-02-18T00:44:13.788+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] JwtTokenProvider.resolveToken - Args: [org.springframework.security.web.header.HeaderWriterFilter$HeaderWriterRequest@6bb527]
+2025-02-18T00:44:13.789+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] JwtTokenProvider.resolveToken - Result: null
+2025-02-18T00:44:13.791+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] MemberController.login - Args: [com.unicorn.lifesub.member.dto.LoginRequest@7cbeb8]
+2025-02-18T00:44:13.791+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] MemberServiceImpl.login - Args: [com.unicorn.lifesub.member.dto.LoginRequest@7cbeb8]
+2025-02-18T00:44:13.791+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.findByUserId - Args: [testuser]
+2025-02-18T00:44:13.792+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    where
+        me1_0.user_id=?
+Hibernate: 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    where
+        me1_0.user_id=?
+2025-02-18T00:44:13.795+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+2025-02-18T00:44:13.797+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.findByUserId - Result: Optional[com.unicorn.lifesub.member.repository.entity.MemberEntity@4f1bfab4]
+2025-02-18T00:44:13.852+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] JwtTokenProvider.createToken - Args: [com.unicorn.lifesub.member.repository.entity.MemberEntity@4f1bfab41 elements]
+2025-02-18T00:44:13.852+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] JwtTokenProvider.createToken - Result: com.unicorn.lifesub.common.dto.JwtTokenDTO@4bfdd751
+2025-02-18T00:44:13.852+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] MemberServiceImpl.login - Result: com.unicorn.lifesub.common.dto.JwtTokenDTO@4bfdd751
+2025-02-18T00:44:13.854+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] MemberController.login - Result: &lt;200 OK OK,com.unicorn.lifesub.common.dto.ApiResponse@5ba34ac0,[]&gt;
+2025-02-18T00:44:13.857+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] JwtTokenProvider.resolveToken - Args: [org.springframework.security.web.header.HeaderWriterFilter$HeaderWriterRequest@6ea5e1]
+2025-02-18T00:44:13.857+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] JwtTokenProvider.resolveToken - Result: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInVzZXJJZCI6InRlc3R1c2VyIiwidXNlck5hbWUiOiJUZXN0IFVzZXIiLCJhdXRoIjpbIlVTRVIiXSwiaWF0IjoxNzM5ODA3MDUzLCJleHAiOjE3NDM0MDcwNTN9.g6YC0tCYgqLvNgTKY9_ZNo58yzYrf8oddK89M4Hsy1xcyMb3nZrCKhEzwKZxHHSD1d-25_g_2bNmt3bjjEj6IQ
+2025-02-18T00:44:13.857+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] JwtTokenProvider.validateToken - Args: [eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInVzZXJJZCI6InRlc3R1c2VyIiwidXNlck5hbWUiOiJUZXN0IFVzZXIiLCJhdXRoIjpbIlVTRVIiXSwiaWF0IjoxNzM5ODA3MDUzLCJleHAiOjE3NDM0MDcwNTN9.g6YC0tCYgqLvNgTKY9_ZNo58yzYrf8oddK89M4Hsy1xcyMb3nZrCKhEzwKZxHHSD1d-25_g_2bNmt3bjjEj6IQ]
+2025-02-18T00:44:13.857+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.l.m.config.jwt.JwtTokenProvider      : ******** validateToken: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInVzZXJJZCI6InRlc3R1c2VyIiwidXNlck5hbWUiOiJUZXN0IFVzZXIiLCJhdXRoIjpbIlVTRVIiXSwiaWF0IjoxNzM5ODA3MDUzLCJleHAiOjE3NDM0MDcwNTN9.g6YC0tCYgqLvNgTKY9_ZNo58yzYrf8oddK89M4Hsy1xcyMb3nZrCKhEzwKZxHHSD1d-25_g_2bNmt3bjjEj6IQ
+2025-02-18T00:44:13.869+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] JwtTokenProvider.validateToken - Result: 1
+2025-02-18T00:44:13.870+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] JwtTokenProvider.getAuthentication - Args: [eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0dXNlciIsInVzZXJJZCI6InRlc3R1c2VyIiwidXNlck5hbWUiOiJUZXN0IFVzZXIiLCJhdXRoIjpbIlVTRVIiXSwiaWF0IjoxNzM5ODA3MDUzLCJleHAiOjE3NDM0MDcwNTN9.g6YC0tCYgqLvNgTKY9_ZNo58yzYrf8oddK89M4Hsy1xcyMb3nZrCKhEzwKZxHHSD1d-25_g_2bNmt3bjjEj6IQ]
+2025-02-18T00:44:13.872+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] JwtTokenProvider.getAuthentication - Result: UsernamePasswordAuthenticationToken [Principal=org.springframework.security.core.userdetails.User [Username=testuser, Password=[PROTECTED], Enabled=true, AccountNonExpired=true, CredentialsNonExpired=true, AccountNonLocked=true, Granted Authorities=[USER]], Credentials=[PROTECTED], Authenticated=true, Details=null, Granted Authorities=[USER]]
+2025-02-18T00:44:13.876+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] MemberController.logout - Args: [com.unicorn.lifesub.member.dto.LogoutRequest@574c8a]
+2025-02-18T00:44:13.877+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] MemberServiceImpl.logout - Args: [com.unicorn.lifesub.member.dto.LogoutRequest@574c8a]
+2025-02-18T00:44:13.877+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] MemberServiceImpl.logout - Result: com.unicorn.lifesub.member.dto.LogoutResponse@218cf600
+2025-02-18T00:44:13.877+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] MemberController.logout - Result: &lt;200 OK OK,com.unicorn.lifesub.common.dto.ApiResponse@4aecb548,[]&gt;
+2025-02-18T00:44:13.886+09:00  INFO 44492 --- [member-service-test] [    Test worker] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring TestDispatcherServlet ''
+2025-02-18T00:44:13.886+09:00  INFO 44492 --- [member-service-test] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-02-18T00:44:13.888+09:00  INFO 44492 --- [member-service-test] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2025-02-18T00:44:13.888+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.deleteAll - Args: []
+2025-02-18T00:44:13.889+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0
+Hibernate: 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0
+2025-02-18T00:44:13.892+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+2025-02-18T00:44:13.894+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+2025-02-18T00:44:13.896+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+2025-02-18T00:44:13.897+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        member_roles 
+    where
+        user_id=?
+2025-02-18T00:44:13.898+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+2025-02-18T00:44:13.899+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+Hibernate: 
+    delete 
+    from
+        members 
+    where
+        user_id=?
+2025-02-18T00:44:13.901+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.deleteAll - Result: null
+2025-02-18T00:44:13.901+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] TestDataManager.setupTestData - Args: []
+2025-02-18T00:44:13.901+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.count - Args: []
+2025-02-18T00:44:13.902+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        count(*) 
+    from
+        members me1_0
+Hibernate: 
+    select
+        count(*) 
+    from
+        members me1_0
+2025-02-18T00:44:13.904+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.count - Result: 0
+2025-02-18T00:44:13.954+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.save - Args: [com.unicorn.lifesub.member.repository.entity.MemberEntity@3d1d35]
+2025-02-18T00:44:13.955+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+Hibernate: 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+2025-02-18T00:44:13.957+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.save - Result: com.unicorn.lifesub.member.repository.entity.MemberEntity@6ae1ba63
+2025-02-18T00:44:14.009+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.save - Args: [com.unicorn.lifesub.member.repository.entity.MemberEntity@2f8222]
+2025-02-18T00:44:14.011+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+Hibernate: 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        r1_0.user_id,
+        r1_0.role,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    left join
+        member_roles r1_0 
+            on me1_0.user_id=r1_0.user_id 
+    where
+        me1_0.user_id=?
+2025-02-18T00:44:14.013+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.save - Result: com.unicorn.lifesub.member.repository.entity.MemberEntity@7553d28b
+2025-02-18T00:44:14.013+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] TestDataManager.setupTestData - Result: null
+2025-02-18T00:44:14.014+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-02-18T00:44:14.016+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        members
+        (created_at, password, updated_at, user_name, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-02-18T00:44:14.017+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+2025-02-18T00:44:14.019+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+Hibernate: 
+    insert 
+    into
+        member_roles
+        (user_id, role) 
+    values
+        (?, ?)
+2025-02-18T00:44:14.023+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] JwtTokenProvider.resolveToken - Args: [org.springframework.security.web.header.HeaderWriterFilter$HeaderWriterRequest@2a8823]
+2025-02-18T00:44:14.023+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] JwtTokenProvider.resolveToken - Result: null
+2025-02-18T00:44:14.025+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] MemberController.login - Args: [com.unicorn.lifesub.member.dto.LoginRequest@2cdbe]
+2025-02-18T00:44:14.025+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] MemberServiceImpl.login - Args: [com.unicorn.lifesub.member.dto.LoginRequest@2cdbe]
+2025-02-18T00:44:14.025+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [START] $Proxy207.findByUserId - Args: [testuser]
+2025-02-18T00:44:14.027+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    where
+        me1_0.user_id=?
+Hibernate: 
+    select
+        me1_0.user_id,
+        me1_0.created_at,
+        me1_0.password,
+        me1_0.updated_at,
+        me1_0.user_name 
+    from
+        members me1_0 
+    where
+        me1_0.user_id=?
+2025-02-18T00:44:14.029+09:00 DEBUG 44492 --- [member-service-test] [    Test worker] org.hibernate.SQL                        : 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+Hibernate: 
+    select
+        r1_0.user_id,
+        r1_0.role 
+    from
+        member_roles r1_0 
+    where
+        r1_0.user_id=?
+2025-02-18T00:44:14.031+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] $Proxy207.findByUserId - Result: Optional[com.unicorn.lifesub.member.repository.entity.MemberEntity@1990d2bb]
+2025-02-18T00:44:14.079+09:00 ERROR 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [EXCEPTION] MemberServiceImpl.login - Exception: Invalid credentials
+2025-02-18T00:44:14.082+09:00  INFO 44492 --- [member-service-test] [    Test worker] c.u.lifesub.common.aop.LoggingAspect     : [END] MemberController.login - Result: &lt;401 UNAUTHORIZED Unauthorized,com.unicorn.lifesub.common.dto.ApiResponse@12fb67f6,[]&gt;
+</pre>
+</span>
+</div>
+<div id="tab2" class="tab">
+<h2>Standard error</h2>
+<span class="code">
+<pre>Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build what is described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (C:\Users\hiond\.gradle\caches\modules-2\files-2.1\net.bytebuddy\byte-buddy-agent\1.15.10\e8eb255b2c378b9a6c7341e7b0e12f0a5636377\byte-buddy-agent-1.15.10.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 8.10</a> at 2025. 2. 18. 오전 12:44:45</p>
+</div>
+</div>
+</body>
+</html>

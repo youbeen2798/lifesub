@@ -10,7 +10,16 @@ podTemplate(
     label: "${PIPELINE_ID}",
     serviceAccount: 'jenkins',
     containers: [
-        containerTemplate(name: 'gradle', image: 'gradle:jdk17', ttyEnabled: true, command: 'cat'),
+        //containerTemplate(name: 'gradle', image: 'gradle:jdk17', ttyEnabled: true, command: 'cat'),
+        containerTemplate(
+            name: 'gradle',
+            image: 'gradle:jdk17',
+            ttyEnabled: true,
+            command: 'cat',
+            volumes: [
+                hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
+            ]
+        ),
         containerTemplate(name: 'podman', image: "mgoltzsche/podman", ttyEnabled: true, command: 'cat', privileged: true),
         containerTemplate(name: 'azure-cli', image: 'hiondal/azure-kubectl:latest', command: 'cat', ttyEnabled: true),
         containerTemplate(name: 'envsubst', image: "hiondal/envsubst", command: 'sleep', args: '1h')
@@ -46,6 +55,12 @@ podTemplate(
 
         stage('Build Applications') {
             container('gradle') {
+                // Docker client 설치
+                sh """
+                    apt-get update
+                    apt-get install -y docker.io
+                """
+
                 sh """
                     chmod +x gradlew
                     ./gradlew :member:clean :member:build
