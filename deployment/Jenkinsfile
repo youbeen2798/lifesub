@@ -62,7 +62,7 @@ podTemplate(
                 // TestContainer를 위한 Docker 데몬 실행
                 sh """
                     dockerd &
-                    sleep 10  // Docker 데몬이 시작될 때까지 대기
+                    sleep 10
                 """
 
                 sh """
