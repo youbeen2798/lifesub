@@ -60,9 +60,9 @@ podTemplate(
                 sh """
                     apt-get update
                     apt-get install -y docker.io
-                    //groupadd -f docker
-                    //usermod -aG docker root
-                    //chmod 666 /var/run/docker.sock
+                    #groupadd -f docker
+                    #usermod -aG docker root
+                    #chmod 666 /var/run/docker.sock
                 """
 
                 sh """
