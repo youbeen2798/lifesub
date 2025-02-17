@@ -10,8 +10,16 @@ podTemplate(
     label: "${PIPELINE_ID}",
     serviceAccount: 'jenkins',
     containers: [
-        containerTemplate(name: 'gradle', image: 'gradle:jdk17', ttyEnabled: true, command: 'cat'),
         containerTemplate(name: 'podman', image: "mgoltzsche/podman", ttyEnabled: true, command: 'cat', privileged: true),
+        containerTemplate(name: 'gradle',
+                        image: 'gradle:jdk17',
+                        ttyEnabled: true,
+                        command: 'cat',
+                        envVars: [
+                            envVar(key: 'DOCKER_HOST', value: 'unix:///run/podman/podman.sock'),
+                            envVar(key: 'TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE', value: '/run/podman/podman.sock'),
+                            envVar(key: 'TESTCONTAINERS_RYUK_DISABLED', value: 'true')
+                        ]),
         containerTemplate(name: 'azure-cli', image: 'hiondal/azure-kubectl:latest', command: 'cat', ttyEnabled: true),
         containerTemplate(name: 'envsubst', image: "hiondal/envsubst", command: 'sleep', args: '1h')
     ],
@@ -46,41 +54,30 @@ podTemplate(
             }
         }
 
-        stage('Initialize Podman') {
+        stage('Build Applications') {
             container('podman') {
-                sh '''
-                    podman system service -t 0 unix:///run/podman/podman.sock &
-                    sleep 5
-                '''
-            }
-        }
-
-        stage('Setup TestContainers') {
-            container('gradle') {
                 sh """
-                    for service in member mysub-infra recommend; do
-                        mkdir -p \${service}/src/test/resources
-                        cat << EOF > \${service}/src/test/resources/testcontainers.properties
-docker.client.strategy=org.testcontainers.dockerclient.UnixSocketClientProviderStrategy
-docker.host=unix:///run/podman/podman.sock
-ryuk.container.privileged=true
-testcontainers.reuse.enable=true
-EOF
-                    done
+                    podman system service -t 0 unix:///run/podman/podman.sock &
+                    sleep 2
                 """
             }
-        }
 
-        stage('Build Applications') {
             container('gradle') {
                 sh """
-                    export DOCKER_HOST=unix:///run/podman/podman.sock
-                    export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/run/podman/podman.sock
+                    # TestContainers 설정
+                    mkdir -p {member,mysub-infra,recommend}/src/test/resources
+                    for service in member mysub-infra recommend; do
+                        cat << EOF > \${service}/src/test/resources/testcontainers.properties
+    docker.client.strategy=org.testcontainers.dockerclient.UnixSocketClientProviderStrategy
+    docker.host=unix:///run/podman/podman.sock
+    ryuk.container.privileged=true
+    testcontainers.reuse.enable=true
+    EOF
+                    done
 
+                    # 빌드 실행
                     chmod +x gradlew
-                    ./gradlew :member:clean :member:build
-                    ./gradlew :mysub-infra:clean :mysub-infra:build
-                    ./gradlew :recommend:clean :recommend:build
+                    ./gradlew clean :member:build :mysub-infra:build :recommend:build
                 """
             }
         }
