@@ -2,6 +2,7 @@ package com.unicorn.lifesub.member.test.integration.repository;
 
 import com.unicorn.lifesub.member.repository.entity.MemberEntity;
 import com.unicorn.lifesub.member.repository.jpa.MemberRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Testcontainers
 @ActiveProfiles("integration-test")
+@Transactional
 class MemberRepositoryIntegrationTest {
     @Container
     static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:13.2-alpine")

@@ -8,6 +8,7 @@ import com.unicorn.lifesub.member.dto.LogoutRequest;
 import com.unicorn.lifesub.member.repository.jpa.MemberRepository;
 import com.unicorn.lifesub.member.test.e2e.config.TestContainerConfig;
 import com.unicorn.lifesub.member.test.e2e.support.TestDataManager;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("e2e-test")
+@Transactional
 class MemberE2ETest extends TestContainerConfig {
 
     @Autowired
