@@ -1,10 +1,9 @@
 name: Backend CI/CD Pipeline
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+# Temporarily disabled
+# on:
+#   push:
+#     branches: [ k8s ]
 
 env:
   JAVA_VERSION: '21'
