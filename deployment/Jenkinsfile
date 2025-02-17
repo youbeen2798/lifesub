@@ -56,24 +56,21 @@ podTemplate(
 
         stage('Build Applications') {
             container('podman') {
-                sh """
-                    podman system service -t 0 unix:///run/podman/podman.sock &
-                    sleep 2
-                """
+                sh 'podman system service -t 0 unix:///run/podman/podman.sock & sleep 2'
             }
 
             container('gradle') {
-                sh """
-                    # TestContainers 설정
-                    mkdir -p {member,mysub-infra,recommend}/src/test/resources
-                    for service in member mysub-infra recommend; do
-                        cat << EOF > \${service}/src/test/resources/testcontainers.properties
-    docker.client.strategy=org.testcontainers.dockerclient.UnixSocketClientProviderStrategy
+                def testContainersConfig = '''docker.client.strategy=org.testcontainers.dockerclient.UnixSocketClientProviderStrategy
     docker.host=unix:///run/podman/podman.sock
     ryuk.container.privileged=true
-    testcontainers.reuse.enable=true
-    EOF
-                    done
+    testcontainers.reuse.enable=true'''
+
+                sh """
+                    # TestContainers 설정
+                    mkdir -p member/src/test/resources mysub-infra/src/test/resources recommend/src/test/resources
+                    echo '${testContainersConfig}' > member/src/test/resources/testcontainers.properties
+                    echo '${testContainersConfig}' > mysub-infra/src/test/resources/testcontainers.properties
+                    echo '${testContainersConfig}' > recommend/src/test/resources/testcontainers.properties
 
                     # 빌드 실행
                     chmod +x gradlew
