@@ -16,6 +16,7 @@ podTemplate(
             image: 'gradle:jdk17',
             ttyEnabled: true,
             command: 'cat',
+            privileged: true,
             volumes: [
                 hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
             ]
@@ -55,10 +56,13 @@ podTemplate(
 
         stage('Build Applications') {
             container('gradle') {
-                // Docker client 설치
+                // Docker client 설치 및 권한 설정
                 sh """
                     apt-get update
                     apt-get install -y docker.io
+                    groupadd -f docker
+                    usermod -aG docker root
+                    chmod 666 /var/run/docker.sock
                 """
 
                 sh """
