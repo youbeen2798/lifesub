@@ -8,7 +8,7 @@ image_org=lifesub
 
 # Application Settings
 replicas=2
-allowed_origins=http://localhost:18080,http://localhost:18081
+allowed_origins=http://20.249.193.161
 
 # Security Settings
 jwt_secret_key=8O2HQ13etL2BWZvYOiWsJ5uWFoLi6NBUG8divYVoCgtHVvlk3dqRksMl16toztDUeBTSIuOOPvHIrYq11G2BwQ
