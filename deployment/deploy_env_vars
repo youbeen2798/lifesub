@@ -1,0 +1,23 @@
+# Team Settings
+teamid=dg0200
+root_project=lifesub
+namespace=${teamid}-${root_project}-ns
+
+# Container Registry Settings
+registry=${teamid}cr.azurecr.io
+image_org=lifesub
+
+# Application Settings
+replicas=2
+allowed_origins=http://localhost:18080,http://localhost:18081
+
+# Security Settings
+jwt_secret_key=8O2HQ13etL2BWZvYOiWsJ5uWFoLi6NBUG8divYVoCgtHVvlk3dqRksMl16toztDUeBTSIuOOPvHIrYq11G2BwQ
+postgres_user=admin
+postgres_password=Passw0rd
+
+# Resource Settings
+resources_requests_cpu=256m
+resources_requests_memory=256Mi
+resources_limits_cpu=1024m
+resources_limits_memory=1024Mi

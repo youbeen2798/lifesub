@@ -1,0 +1,111 @@
+def PIPELINE_ID = "${env.BUILD_NUMBER}"
+
+def getImageTag() {
+    def dateFormat = new java.text.SimpleDateFormat('yyyyMMddHHmmss')
+    def currentDate = new Date()
+    return dateFormat.format(currentDate)
+}
+
+podTemplate(
+    label: "${PIPELINE_ID}",
+    serviceAccount: 'jenkins',
+    containers: [
+        containerTemplate(name: 'gradle', image: 'gradle:jdk17', ttyEnabled: true, command: 'cat'),
+        containerTemplate(name: 'podman', image: "mgoltzsche/podman", ttyEnabled: true, command: 'cat', privileged: true),
+        containerTemplate(name: 'azure-cli', image: 'hiondal/azure-kubectl:latest', command: 'cat', ttyEnabled: true),
+        containerTemplate(name: 'envsubst', image: "hiondal/envsubst", command: 'sleep', args: '1h')
+    ],
+    volumes: [
+        emptyDirVolume(mountPath: '/home/gradle/.gradle', memory: false),
+        emptyDirVolume(mountPath: '/root/.azure', memory: false)
+    ]
+) {
+    node(PIPELINE_ID) {
+        def props
+        def imageTag = getImageTag()
+        def manifest = "deploy.yaml"
+
+        stage("Get Source") {
+            checkout scm
+            props = readProperties file: "deployment/deploy_env_vars"
+        }
+
+        stage("Setup AKS") {
+            container('azure-cli') {
+                withCredentials([azureServicePrincipal('azure-credentials')]) {
+                    sh """
+                        az login --service-principal -u \$AZURE_CLIENT_ID -p \$AZURE_CLIENT_SECRET -t \$AZURE_TENANT_ID
+                        az aks get-credentials --resource-group ictcoe-edu --name ${props.teamid}-aks --overwrite-existing
+                        kubectl create namespace ${props.namespace} --dry-run=client -o yaml | kubectl apply -f -
+                    """
+                }
+            }
+        }
+
+        stage('Build Applications') {
+            container('gradle') {
+                sh """
+                    chmod +x gradlew
+                    ./gradlew :member:clean :member:build
+                    ./gradlew :mysub-infra:clean :mysub-infra:build
+                    ./gradlew :recommend:clean :recommend:build
+                """
+            }
+        }
+
+        stage('Build & Push Images') {
+            container('podman') {
+                withCredentials([usernamePassword(
+                    credentialsId: 'acr-credentials',
+                    usernameVariable: 'USERNAME',
+                    passwordVariable: 'PASSWORD'
+                )]) {
+                    def services = ['member', 'mysub', 'recommend']
+
+                    sh "podman login ${props.registry} --username \$USERNAME --password \$PASSWORD"
+
+                    services.each { service ->
+                        def buildDir = service == 'mysub' ? 'mysub-infra' : service
+                        def jarFile = service == 'mysub' ? 'mysub.jar' : "${service}.jar"
+
+                        sh """
+                            podman build \
+                                --build-arg BUILD_LIB_DIR="${buildDir}/build/libs" \
+                                --build-arg ARTIFACTORY_FILE="${jarFile}" \
+                                -f container/Dockerfile \
+                                -t ${props.registry}/${props.image_org}/${service}:${imageTag} .
+
+                            podman push ${props.registry}/${props.image_org}/${service}:${imageTag}
+                        """
+                    }
+                }
+            }
+        }
+
+        stage('Generate & Apply Manifest') {
+            container('envsubst') {
+                services.each { service ->
+                    sh """
+                        export ${service}_image_path=${props.registry}/${props.image_org}/${service}:${imageTag}
+                    """
+                }
+
+                sh """
+                    envsubst < deployment/${manifest}.template > deployment/${manifest}
+                    cat deployment/${manifest}
+                """
+            }
+
+            container('azure-cli') {
+                sh """
+                    kubectl apply -f deployment/${manifest}
+
+                    echo "Waiting for deployments to be ready..."
+                    kubectl -n ${props.namespace} wait --for=condition=available deployment/member --timeout=300s
+                    kubectl -n ${props.namespace} wait --for=condition=available deployment/mysub --timeout=300s
+                    kubectl -n ${props.namespace} wait --for=condition=available deployment/recommend --timeout=300s
+                """
+            }
+        }
+    }
+}
