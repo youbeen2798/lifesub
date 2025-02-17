@@ -2,9 +2,9 @@ name: Backend CI/CD Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "k8s" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "k8s" ]
 
 env:
   # Team Settings
