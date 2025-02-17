@@ -1,10 +1,9 @@
 # Team Settings
 teamid=dg0200
 root_project=lifesub
-namespace=${teamid}-${root_project}-ns
 
 # Container Registry Settings
-registry=${teamid}cr.azurecr.io
+registry=dg0200cr.azurecr.io
 image_org=lifesub
 
 # Application Settings
