@@ -1,138 +1,143 @@
 def PIPELINE_ID = "${env.BUILD_NUMBER}"
 
 def getImageTag() {
-   def dateFormat = new java.text.SimpleDateFormat('yyyyMMddHHmmss')
-   def currentDate = new Date()
-   return dateFormat.format(currentDate)
+    def dateFormat = new java.text.SimpleDateFormat('yyyyMMddHHmmss')
+    def currentDate = new Date()
+    return dateFormat.format(currentDate)
 }
 
 podTemplate(
-   label: "${PIPELINE_ID}",
-   serviceAccount: 'jenkins',
-   containers: [
-       containerTemplate(name: 'podman',
-           image: "mgoltzsche/podman",
-           ttyEnabled: true,
-           command: 'cat',
-           privileged: true),
-       containerTemplate(name: 'gradle',
-           image: 'gradle:jdk17',
-           ttyEnabled: true,
-           command: 'cat',
-           envVars: [
-               envVar(key: 'DOCKER_HOST', value: 'unix:///run/podman/podman.sock'),
-               envVar(key: 'TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE', value: '/run/podman/podman.sock'),
-               envVar(key: 'TESTCONTAINERS_RYUK_DISABLED', value: 'true')
-           ]),
-       containerTemplate(name: 'git',
-           image: 'ghcr.io/chriswhong/git-yq:latest',
-           command: 'cat',
-           ttyEnabled: true)
-   ],
-   volumes: [
-       emptyDirVolume(mountPath: '/home/gradle/.gradle', memory: false),
-       emptyDirVolume(mountPath: '/run/podman', memory: false)
-   ]
+    label: "${PIPELINE_ID}",
+    serviceAccount: 'jenkins',
+    containers: [
+        containerTemplate(name: 'podman',
+            image: "mgoltzsche/podman",
+            ttyEnabled: true,
+            command: 'cat',
+            privileged: true),
+        containerTemplate(name: 'gradle',
+            image: 'gradle:jdk17',
+            ttyEnabled: true,
+            command: 'cat',
+            envVars: [
+                envVar(key: 'DOCKER_HOST', value: 'unix:///run/podman/podman.sock'),
+                envVar(key: 'TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE', value: '/run/podman/podman.sock'),
+                envVar(key: 'TESTCONTAINERS_RYUK_DISABLED', value: 'true')
+            ]),
+        containerTemplate(name: 'git',
+            image: 'alpine:3.19',
+            command: 'cat',
+            ttyEnabled: true)
+    ],
+    volumes: [
+        emptyDirVolume(mountPath: '/home/gradle/.gradle', memory: false),
+        emptyDirVolume(mountPath: '/run/podman', memory: false)
+    ]
 ) {
-   node(PIPELINE_ID) {
-       def props
-       def imageTag = getImageTag()
-       def services = ['member', 'mysub', 'recommend']
-       def manifestRepo = 'cna-bootcamp/lifesub-manifest'
-       def manifestBranch = 'main'
+    node(PIPELINE_ID) {
+        def props
+        def imageTag = getImageTag()
+        def services = ['member', 'mysub', 'recommend']
+        def manifestRepo = 'cna-bootcamp/lifesub-manifest'
+        def manifestBranch = 'main'
 
-       stage("Get Source") {
-           checkout scm
-           props = readProperties file: "deployment/deploy_env_vars"
-       }
+        stage("Get Source") {
+            checkout scm
+            props = readProperties file: "deployment/deploy_env_vars"
+        }
 
-       stage('Build Applications') {
-           container('podman') {
-               sh 'podman system service -t 0 unix:///run/podman/podman.sock & sleep 2'
-           }
+        stage('Build Applications') {
+            container('podman') {
+                sh 'podman system service -t 0 unix:///run/podman/podman.sock & sleep 2'
+            }
 
-           container('gradle') {
-               def testContainersConfig = '''docker.client.strategy=org.testcontainers.dockerclient.UnixSocketClientProviderStrategy
+            container('gradle') {
+                def testContainersConfig = '''docker.client.strategy=org.testcontainers.dockerclient.UnixSocketClientProviderStrategy
 docker.host=unix:///run/podman/podman.sock
 ryuk.container.privileged=true
 testcontainers.reuse.enable=true'''
 
-               sh """
-                   # TestContainers 설정
-                   mkdir -p member/src/test/resources mysub-infra/src/test/resources recommend/src/test/resources
-                   echo '${testContainersConfig}' > member/src/test/resources/testcontainers.properties
-                   echo '${testContainersConfig}' > mysub-infra/src/test/resources/testcontainers.properties
-                   echo '${testContainersConfig}' > recommend/src/test/resources/testcontainers.properties
+                sh """
+                    # TestContainers 설정
+                    mkdir -p member/src/test/resources mysub-infra/src/test/resources recommend/src/test/resources
+                    echo '${testContainersConfig}' > member/src/test/resources/testcontainers.properties
+                    echo '${testContainersConfig}' > mysub-infra/src/test/resources/testcontainers.properties
+                    echo '${testContainersConfig}' > recommend/src/test/resources/testcontainers.properties
 
-                   # 빌드 실행
-                   chmod +x gradlew
-                   ./gradlew clean :member:build :mysub-infra:build :recommend:build
-               """
-           }
-       }
+                    # 빌드 실행
+                    chmod +x gradlew
+                    ./gradlew clean :member:build :mysub-infra:build :recommend:build
+                """
+            }
+        }
 
-       stage('Build & Push Images') {
-           container('podman') {
-               withCredentials([usernamePassword(
-                   credentialsId: 'acr-credentials',
-                   usernameVariable: 'USERNAME',
-                   passwordVariable: 'PASSWORD'
-               )]) {
-                   sh "podman login ${props.registry} --username \$USERNAME --password \$PASSWORD"
+        stage('Build & Push Images') {
+            container('podman') {
+                withCredentials([usernamePassword(
+                    credentialsId: 'acr-credentials',
+                    usernameVariable: 'USERNAME',
+                    passwordVariable: 'PASSWORD'
+                )]) {
+                    sh "podman login ${props.registry} --username \$USERNAME --password \$PASSWORD"
 
-                   services.each { service ->
-                       def buildDir = service == 'mysub' ? 'mysub-infra' : service
-                       def jarFile = service == 'mysub' ? 'mysub.jar' : "${service}.jar"
+                    services.each { service ->
+                        def buildDir = service == 'mysub' ? 'mysub-infra' : service
+                        def jarFile = service == 'mysub' ? 'mysub.jar' : "${service}.jar"
 
-                       sh """
-                           podman build \\
-                               --build-arg BUILD_LIB_DIR="${buildDir}/build/libs" \\
-                               --build-arg ARTIFACTORY_FILE="${jarFile}" \\
-                               -f deployment/Dockerfile \\
-                               -t ${props.registry}/${props.image_org}/${service}:${imageTag} .
+                        sh """
+                            podman build \\
+                                --build-arg BUILD_LIB_DIR="${buildDir}/build/libs" \\
+                                --build-arg ARTIFACTORY_FILE="${jarFile}" \\
+                                -f deployment/Dockerfile \\
+                                -t ${props.registry}/${props.image_org}/${service}:${imageTag} .
 
-                           podman push ${props.registry}/${props.image_org}/${service}:${imageTag}
-                       """
-                   }
-               }
-           }
-       }
+                            podman push ${props.registry}/${props.image_org}/${service}:${imageTag}
+                        """
+                    }
+                }
+            }
+        }
 
-       stage('Update Manifests') {
-           container('git') {
-               withCredentials([usernamePassword(
-                   credentialsId: 'github-credentials',
-                   usernameVariable: 'GIT_USERNAME',
-                   passwordVariable: 'GIT_PASSWORD'
-               )]) {
-                   sh '''
-                       git config --global user.email "jenkins@example.com"
-                       git config --global user.name "Jenkins"
-                   '''
+        stage('Update Manifests') {
+            container('git') {
+                // git과 yq 설치
+                sh '''
+                    apk add --no-cache git curl
+                    curl -L https://github.com/mikefarah/yq/releases/download/v4.40.5/yq_linux_amd64 -o /usr/local/bin/yq
+                    chmod +x /usr/local/bin/yq
+                '''
 
-                   // manifest 저장소를 https 프로토콜로 클론
-                   sh """
-                       rm -rf lifesub-manifest
-                       git clone https://oauth2:${GIT_PASSWORD}@github.com/${manifestRepo}.git
-                   """
+                withCredentials([usernamePassword(
+                    credentialsId: 'github-credentials',
+                    usernameVariable: 'GIT_USERNAME',
+                    passwordVariable: 'GIT_PASSWORD'
+                )]) {
+                    sh '''
+                        git config --global user.email "jenkins@example.com"
+                        git config --global user.name "Jenkins"
+                    '''
 
-                   dir('lifesub-manifest') {
-                       services.each { service ->
-                           def imagePath = "${props.registry}/${props.image_org}/${service}:${imageTag}"
-                           sh """
-                               # deployment yaml 파일의 이미지 태그 업데이트
-                               yq -i '.spec.template.spec.containers[0].image = "${imagePath}"' lifesub/deployments/${service}-deployment.yaml
-                           """
-                       }
+                    sh """
+                        rm -rf lifesub-manifest
+                        git clone https://oauth2:${GIT_PASSWORD}@github.com/${manifestRepo}.git
+                    """
 
-                       sh """
-                           git add .
-                           git diff-index --quiet HEAD || git commit -m "Update backend services images to ${imageTag}"
-                           git push origin ${manifestBranch}
-                       """
-                   }
-               }
-           }
-       }
-   }
+                    dir('lifesub-manifest') {
+                        services.each { service ->
+                            def imagePath = "${props.registry}/${props.image_org}/${service}:${imageTag}"
+                            sh """
+                                yq -i '.spec.template.spec.containers[0].image = "${imagePath}"' lifesub/deployments/${service}-deployment.yaml
+                            """
+                        }
+
+                        sh """
+                            git add .
+                            git diff-index --quiet HEAD || git commit -m "Update backend services images to ${imageTag}"
+                            git push origin ${manifestBranch}
+                        """
+                    }
+                }
+            }
+        }
+    }
 }
