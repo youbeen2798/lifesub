@@ -74,7 +74,7 @@ podTemplate(
                             podman build \
                                 --build-arg BUILD_LIB_DIR="${buildDir}/build/libs" \
                                 --build-arg ARTIFACTORY_FILE="${jarFile}" \
-                                -f container/Dockerfile \
+                                -f deployment/Dockerfile \
                                 -t ${props.registry}/${props.image_org}/${service}:${imageTag} .
 
                             podman push ${props.registry}/${props.image_org}/${service}:${imageTag}
