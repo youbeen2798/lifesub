@@ -63,26 +63,6 @@ securityContext:
   runAsUser: 1001
 EOF
 
-    echo "Creating external service for ${service}..."
-    # External Service 생성 - heredoc으로 직접 manifest 적용
-    kubectl apply -f - <<EOF
-apiVersion: v1
-kind: Service
-metadata:
-  name: ${service}-external
-spec:
-  ports:
-  - name: tcp-postgresql
-    port: 5432
-    protocol: TCP
-    targetPort: tcp-postgresql
-  selector:
-    app.kubernetes.io/component: primary
-    app.kubernetes.io/instance: ${service}
-  sessionAffinity: None
-  type: LoadBalancer
-EOF
-
 done
 
 echo "Installation completed successfully in namespace: ${NAMESPACE}"
