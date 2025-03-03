@@ -187,6 +187,7 @@ jobs:
       - name: Read deployment variables
         run: |
           source deployment/deploy_env_vars
+          echo "TEAMID=$teamid" >> $TEAMID
           echo "NAMESPACE=$namespace" >> $GITHUB_ENV
           echo "REGISTRY=$registry" >> $GITHUB_ENV
           echo "IMAGE_ORG=$image_org" >> $GITHUB_ENV
