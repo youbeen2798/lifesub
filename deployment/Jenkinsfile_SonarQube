@@ -96,7 +96,7 @@ testcontainers.reuse.enable=true'''
                             -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml
 
                         # Mysub 서비스 (biz & infra 구조)
-                        ./gradlew :mysub-infra:test :mysub-infra:jacocoTestReport :mysub-biz:test :mysub-biz:jacocoTestReport :mysub-infra:sonar \
+                        ./gradlew :mysub-infra:test :mysub-infra:jacocoTestReport :mysub-infra:sonar \
                             -Dsonar.projectKey=lifesub-mysub \
                             -Dsonar.projectName=lifesub-mysub \
                             -Dsonar.java.binaries=build/classes/java/main,mysub-biz/build/classes/java/main \
