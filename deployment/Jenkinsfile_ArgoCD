@@ -166,7 +166,7 @@ testcontainers.reuse.enable=true'''
                         for service in ${services.join(' ')}; do
                             # 백엔드 서비스 이미지 태그 업데이트
                             if [ -f lifesub/deployments/\${service}-deployment.yaml ]; then
-                                sed -i "s|image: ${props.registry}/${props.image_org}/\${service}:.*|image: ${props.registry}/${props.image_org}/\${service}:${imageTag}|g" lifesub/deployments/\${service}.yaml
+                                sed -i "s|image: ${props.registry}/${props.image_org}/\${service}:.*|image: ${props.registry}/${props.image_org}/\${service}:${imageTag}|g" lifesub/deployments/\${service}-deployment.yaml
                             fi
                         done
 
