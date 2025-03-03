@@ -85,22 +85,22 @@ testcontainers.reuse.enable=true'''
                         ./gradlew :member:test :member:jacocoTestReport :member:sonar \
                             -Dsonar.projectKey=lifesub-member \
                             -Dsonar.projectName=lifesub-member \
-                            -Dsonar.java.binaries=./member/build/classes/java/main \
-                            -Dsonar.coverage.jacoco.xmlReportPaths=./member/build/reports/jacoco/test/jacocoTestReport.xml
+                            -Dsonar.java.binaries=build/classes/java/main \
+                            -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml
 
                         # Recommend 서비스
                         ./gradlew :recommend:test :recommend:jacocoTestReport :recommend:sonar \
                             -Dsonar.projectKey=lifesub-recommend \
                             -Dsonar.projectName=lifesub-recommend \
-                            -Dsonar.java.binaries=./recommend/build/classes/java/main \
-                            -Dsonar.coverage.jacoco.xmlReportPaths=./recommend/build/reports/jacoco/test/jacocoTestReport.xml
+                            -Dsonar.java.binaries=build/classes/java/main \
+                            -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml
 
                         # Mysub 서비스 (biz & infra 구조)
                         ./gradlew :mysub-infra:test :mysub-infra:jacocoTestReport :mysub-biz:test :mysub-biz:jacocoTestReport :mysub-infra:sonar \
                             -Dsonar.projectKey=lifesub-mysub \
                             -Dsonar.projectName=lifesub-mysub \
-                            -Dsonar.java.binaries=./mysub-infra/build/classes/java/main,mysub-biz/build/classes/java/main \
-                            -Dsonar.coverage.jacoco.xmlReportPaths=./mysub-infra/build/reports/jacoco/test/jacocoTestReport.xml,mysub-biz/build/reports/jacoco/test/jacocoTestReport.xml
+                            -Dsonar.java.binaries=build/classes/java/main,mysub-biz/build/classes/java/main \
+                            -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml,mysub-biz/build/reports/jacoco/test/jacocoTestReport.xml
                     """
                 }
 
