@@ -1,143 +1,272 @@
 name: Backend CI/CD Pipeline
 
-# Temporarily disabled
-# on:
-#   push:
-#     branches: [ k8s ]
+on:
+  push:
+    branches:
+      - cicd
+    paths:
+      - '**/*.java'
+      - '**/*.gradle'
+      - 'deployment/**'
+      - '.github/workflows/**'
 
 env:
   JAVA_VERSION: '21'
-  GRADLE_VERSION: '8.5'
+  GRADLE_VERSION: '8.7'
 
 jobs:
   build:
-    name: Build Applications
+    name: Build and Analyze Applications
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # SonarQube에서 더 나은 결과를 위해 전체 이력 가져오기
 
       - name: Set up JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v3
         with:
-          java-version: ${{ env.JAVA_VERSION }}
           distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: 'gradle'
 
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Cache SonarQube packages
+        uses: actions/cache@v3
         with:
-          gradle-version: ${{ env.GRADLE_VERSION }}
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
 
-      - name: Build with Gradle
+      - name: Build and analyze member service
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: |
-          chmod +x gradlew
-          ./gradlew clean :member:build :mysub-infra:build :recommend:build
+          ./gradlew :member:build :member:jacocoTestReport :member:sonar \
+          -Dsonar.projectKey=lifesub-member \
+          -Dsonar.projectName=lifesub-member \
+          -Dsonar.java.binaries=build/classes/java/main \
+          -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml \
+          -Dsonar.exclusions=**/config/**,**/entity/**,**/dto/**,**/*Application.class,**/exception/**
 
-      - name: Upload Build Artifacts
+      - name: Build and analyze mysub service
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        run: |
+          ./gradlew :mysub-infra:build :mysub-infra:jacocoTestReport :mysub-infra:sonar \
+          -Dsonar.projectKey=lifesub-mysub \
+          -Dsonar.projectName=lifesub-mysub \
+          -Dsonar.java.binaries=build/classes/java/main \
+          -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml \
+          -Dsonar.exclusions=**/config/**,**/entity/**,**/dto/**,**/*Application.class,**/exception/**
+
+      - name: Build and analyze recommend service
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        run: |
+          ./gradlew :recommend:build :recommend:jacocoTestReport :recommend:sonar \
+          -Dsonar.projectKey=lifesub-recommend \
+          -Dsonar.projectName=lifesub-recommend \
+          -Dsonar.java.binaries=build/classes/java/main \
+          -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml \
+          -Dsonar.exclusions=**/config/**,**/entity/**,**/dto/**,**/*Application.class,**/exception/**
+
+      - name: Check SonarQube Quality Gate
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+      - name: Upload member artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build-artifacts
-          path: |
-            member/build/libs/*.jar
-            mysub-infra/build/libs/*.jar
-            recommend/build/libs/*.jar
+          name: member-artifact
+          path: member/build/libs/member.jar
+          retention-days: 1
+
+      - name: Upload mysub artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mysub-artifact
+          path: mysub-infra/build/libs/mysub.jar
+          retention-days: 1
+
+      - name: Upload recommend artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: recommend-artifact
+          path: recommend/build/libs/recommend.jar
+          retention-days: 1
 
   release:
-    name: Build and Push Images
+    name: Build and Push Docker Images
     needs: build
     runs-on: ubuntu-latest
     outputs:
-      image_tag: ${{ steps.set_tag.outputs.tag }}
+      image_tag: ${{ steps.set_tag.outputs.image_tag }}
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Download Build Artifacts
+      - name: Download member artifact
         uses: actions/download-artifact@v4
         with:
-          name: build-artifacts
+          name: member-artifact
+          path: member/build/libs/
 
-      - name: Load Environment Variables
-        run: source deployment/deploy_env_vars
+      - name: Download mysub artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: mysub-artifact
+          path: mysub-infra/build/libs/
 
-      - name: Generate Image Tag
-        id: set_tag
-        run: |
-          tag=$(date +'%Y%m%d%H%M%S')
-          echo "tag=${tag}" >> $GITHUB_OUTPUT
+      - name: Download recommend artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: recommend-artifact
+          path: recommend/build/libs/
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Login to Azure Container Registry
-        uses: azure/docker-login@v1
+        uses: docker/login-action@v3
         with:
-          login-server: ${{ env.registry }}
-          username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD }}
+          registry: ${{ secrets.REGISTRY_URL }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      - name: Build and Push Images
+      - name: Load environment variables
+        id: env_vars
         run: |
-          for service in member mysub recommend; do
-            build_dir=$([[ "$service" == "mysub" ]] && echo "mysub-infra" || echo "$service")
-            jar_file=$([[ "$service" == "mysub" ]] && echo "mysub.jar" || echo "${service}.jar")
-          
-            docker build \
-              --build-arg BUILD_LIB_DIR="${build_dir}/build/libs" \
-              --build-arg ARTIFACTORY_FILE="${jar_file}" \
-              -f deployment/Dockerfile \
-              -t ${registry}/${image_org}/${service}:${{ steps.set_tag.outputs.tag }} .
-          
-            docker push ${registry}/${image_org}/${service}:${{ steps.set_tag.outputs.tag }}
-          done
+          cat deployment/deploy_env_vars >> $GITHUB_ENV
+
+      - name: Set image tag
+        id: set_tag
+        run: |
+          TIMESTAMP=$(date +'%Y%m%d%H%M%S')
+          echo "image_tag=${TIMESTAMP}" >> $GITHUB_OUTPUT
+
+      - name: Build and push member image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: deployment/Dockerfile
+          build-args: |
+            BUILD_LIB_DIR=member/build/libs
+            ARTIFACTORY_FILE=member.jar
+          push: true
+          tags: ${{ env.registry }}/${{ env.image_org }}/member:${{ steps.set_tag.outputs.image_tag }}
+
+      - name: Build and push mysub image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: deployment/Dockerfile
+          build-args: |
+            BUILD_LIB_DIR=mysub-infra/build/libs
+            ARTIFACTORY_FILE=mysub.jar
+          push: true
+          tags: ${{ env.registry }}/${{ env.image_org }}/mysub:${{ steps.set_tag.outputs.image_tag }}
+
+      - name: Build and push recommend image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: deployment/Dockerfile
+          build-args: |
+            BUILD_LIB_DIR=recommend/build/libs
+            ARTIFACTORY_FILE=recommend.jar
+          push: true
+          tags: ${{ env.registry }}/${{ env.image_org }}/recommend:${{ steps.set_tag.outputs.image_tag }}
 
   deploy:
-    name: Deploy to AKS
+    name: Deploy to Kubernetes
     needs: release
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Load Environment Variables
-        run: source deployment/deploy_env_vars
+      - name: Load environment variables
+        run: |
+          cat deployment/deploy_env_vars >> $GITHUB_ENV
 
-      - name: Azure Login
+      - name: Install envsubst
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gettext-base
+
+      - name: Set up Azure CLI
+        uses: azure/setup-azurecli@v3
+
+      - name: Login to Azure
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Set AKS Context
-        uses: azure/aks-set-context@v1
-        with:
-          resource-group: ictcoe-edu
-          cluster-name: ${{ env.teamid }}-aks
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
 
-      - name: Create Namespace
+      - name: Get AKS credentials
         run: |
-          kubectl create namespace ${teamid}-${root_project}-ns --dry-run=client -o yaml | kubectl apply -f -
+          az aks get-credentials \
+            --resource-group ictcoe-edu \
+            --name ${{ env.teamid }}-aks \
+            --overwrite-existing
 
-      - name: Generate Manifest
+      - name: Create namespace
         run: |
-          export namespace=${teamid}-${root_project}-ns
-          export allowed_origins=${allowed_origins}
-          export jwt_secret_key=${jwt_secret_key}
-          export postgres_user=${postgres_user}
-          export postgres_password=${postgres_password}
-          export replicas=${replicas}
-          export resources_requests_cpu=${resources_requests_cpu}
-          export resources_requests_memory=${resources_requests_memory}
-          export resources_limits_cpu=${resources_limits_cpu}
-          export resources_limits_memory=${resources_limits_memory}
-          export member_image_path=${registry}/${image_org}/member:${{ needs.release.outputs.image_tag }}
-          export mysub_image_path=${registry}/${image_org}/mysub:${{ needs.release.outputs.image_tag }}
-          export recommend_image_path=${registry}/${image_org}/recommend:${{ needs.release.outputs.image_tag }}
+          kubectl create namespace ${{ env.namespace }} --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Generate deployment manifest
+        run: |
+          export namespace=${{ env.namespace }}
+          export allowed_origins=${{ env.allowed_origins }}
+          export jwt_secret_key=${{ env.jwt_secret_key }}
+          export postgres_user=${{ env.postgres_user }}
+          export postgres_password=${{ env.postgres_password }}
+          export replicas=${{ env.replicas }}
+          export resources_requests_cpu=${{ env.resources_requests_cpu }}
+          export resources_requests_memory=${{ env.resources_requests_memory }}
+          export resources_limits_cpu=${{ env.resources_limits_cpu }}
+          export resources_limits_memory=${{ env.resources_limits_memory }}
           
+          # Set image paths with the tag from the release job
+          export member_image_path=${{ env.registry }}/${{ env.image_org }}/member:${{ needs.release.outputs.image_tag }}
+          export mysub_image_path=${{ env.registry }}/${{ env.image_org }}/mysub:${{ needs.release.outputs.image_tag }}
+          export recommend_image_path=${{ env.registry }}/${{ env.image_org }}/recommend:${{ needs.release.outputs.image_tag }}
+          
+          # Generate manifest
           envsubst < deployment/deploy.yaml.template > deployment/deploy.yaml
+          
+          # Debug: Output the generated manifest
           cat deployment/deploy.yaml
 
-      - name: Deploy to AKS
+      - name: Apply deployment manifest
         run: |
           kubectl apply -f deployment/deploy.yaml
-          
-          echo "Waiting for deployments to be ready..."
-          kubectl -n ${namespace} wait --for=condition=available deployment/member --timeout=300s
-          kubectl -n ${namespace} wait --for=condition=available deployment/mysub --timeout=300s
-          kubectl -n ${namespace} wait --for=condition=available deployment/recommend --timeout=300s
+
+      - name: Wait for deployments
+        run: |
+          kubectl -n ${{ env.namespace }} wait --for=condition=available deployment/member --timeout=300s
+          kubectl -n ${{ env.namespace }} wait --for=condition=available deployment/mysub --timeout=300s
+          kubectl -n ${{ env.namespace }} wait --for=condition=available deployment/recommend --timeout=300s
+
+      - name: Get service information
+        run: |
+          kubectl get ingress -n ${{ env.namespace }}
+          echo "Backend services deployed successfully"
