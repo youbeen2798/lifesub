@@ -99,8 +99,8 @@ testcontainers.reuse.enable=true'''
                         ./gradlew :mysub-infra:test :mysub-infra:jacocoTestReport :mysub-infra:sonar \
                             -Dsonar.projectKey=lifesub-mysub \
                             -Dsonar.projectName=lifesub-mysub \
-                            -Dsonar.java.binaries=build/classes/java/main,mysub-biz/build/classes/java/main \
-                            -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml,mysub-biz/build/reports/jacoco/test/jacocoTestReport.xml
+                            -Dsonar.java.binaries=build/classes/java/main \
+                            -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml
                     """
                 }
 
