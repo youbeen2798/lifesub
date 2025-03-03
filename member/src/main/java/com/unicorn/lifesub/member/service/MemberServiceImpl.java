@@ -19,8 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 
-import static java.util.stream.Collectors.toList;
-
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
