@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +40,7 @@ public class MemberServiceImpl implements MemberService {
         // 사용자의 권한 정보 생성
         Collection<? extends GrantedAuthority> authorities = member.getRoles().stream()
                 .map(SimpleGrantedAuthority::new)
-                .toList();
+                .collect(Collectors.toList());
 
         return jwtTokenProvider.createToken(member, authorities);
     }
