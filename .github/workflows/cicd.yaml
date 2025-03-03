@@ -2,7 +2,8 @@ name: Backend CI/CD Pipeline
 
 on:
   push:
-    branches: [ cicd ]
+    branches:
+      - cicd
     paths:
       - '**'
       - '!.github/**'
