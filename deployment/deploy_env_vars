@@ -1,9 +1,10 @@
 # Team Settings
-teamid=dg0200
+teamid=unicorn
 root_project=lifesub
+namespace=unicorn-lifesub-ns
 
 # Container Registry Settings
-registry=dg0200cr.azurecr.io
+registry=unicorncr.azurecr.io
 image_org=lifesub
 
 # Application Settings

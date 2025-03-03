@@ -2,6 +2,8 @@ plugins {
     id 'org.springframework.boot' version '3.4.0' apply false
     //id 'io.spring.dependency-management' version '1.1.6' apply false
     id 'java'
+
+    id "org.sonarqube" version "5.0.0.4638" apply false		//apply false 해야 서브 프로젝트에 제대로 적용됨
 }
 
 allprojects {
@@ -14,7 +16,14 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
-    
+
+    apply plugin: 'org.sonarqube'
+    apply plugin: 'jacoco' // 서브 프로젝트에 JaCoCo 플러그인 적용
+
+    jacoco {
+        toolVersion = "0.8.11" // JaCoCo 최신 버전 사용
+    }
+
     repositories {
         mavenCentral()
     }
@@ -58,6 +67,29 @@ subprojects {
         include '**/*Test.class'
         testLogging {
             events "passed", "skipped", "failed"
+        }
+        finalizedBy jacocoTestReport // 테스트 후 JaCoCo 리포트 생성
+    }
+
+    jacocoTestReport {
+        dependsOn test
+        reports {
+            xml.required = true // SonarQube 분석을 위해 XML 형식 필요
+            csv.required = false
+            html.required = true
+            html.outputLocation = layout.buildDirectory.dir("jacocoHtml").get().asFile
+        }
+
+        afterEvaluate {
+            classDirectories.setFrom(files(classDirectories.files.collect {
+                fileTree(dir: it, exclude: [
+                        "**/config/**",        // 설정 클래스 제외
+                        "**/entity/**",        // 엔티티 클래스 제외
+                        "**/dto/**",           // DTO 클래스 제외
+                        "**/*Application.class", // 메인 애플리케이션 클래스 제외
+                        "**/exception/**"      // 예외 클래스 제외
+                ])
+            }))
         }
     }
 }
