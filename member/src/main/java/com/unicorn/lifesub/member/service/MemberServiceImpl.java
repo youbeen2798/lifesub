@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,14 +32,14 @@ public class MemberServiceImpl implements MemberService {
         MemberEntity member = memberRepository.findByUserId(request.getUserId())
                 .orElseThrow(() -> new InfraException(ErrorCode.MEMBER_NOT_FOUND));
 
-        // 사용자의 권한 정보 생성
-        Collection<? extends GrantedAuthority> authorities = member.getRoles().stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-
         if (!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
             throw new BusinessException(ErrorCode.INVALID_CREDENTIALS);
         }
+
+        // 사용자의 권한 정보 생성
+        Collection<? extends GrantedAuthority> authorities = member.getRoles().stream()
+                .map(SimpleGrantedAuthority::new)
+                .toList();
 
         return jwtTokenProvider.createToken(member, authorities);
     }

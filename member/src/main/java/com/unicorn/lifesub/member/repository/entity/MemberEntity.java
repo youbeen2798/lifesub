@@ -55,4 +55,8 @@ public class MemberEntity extends BaseTimeEntity {
                 .roles(member.getRoles())
                 .build();
     }
+
+    public void updateUserName(String userName) {
+        this.userName = userName;
+    }
 }

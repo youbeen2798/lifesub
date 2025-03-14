@@ -2,6 +2,8 @@ plugins {
     id 'org.springframework.boot' version '3.4.0' apply false
     //id 'io.spring.dependency-management' version '1.1.6' apply false
     id 'java'
+
+    id "org.sonarqube" version "5.0.0.4638" apply false		//apply false 해야 서브 프로젝트에 제대로 적용됨
 }
 
 allprojects {
@@ -14,26 +16,83 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
-    
+
+    apply plugin: 'org.sonarqube'
+    apply plugin: 'jacoco' // 서브 프로젝트에 JaCoCo 플러그인 적용
+
+    jacoco {
+        toolVersion = "0.8.11" // JaCoCo 최신 버전 사용
+    }
+
     repositories {
         mavenCentral()
     }
-    
-    dependencies {
 
+    dependencies {
+        // Spring Boot Starters
         implementation 'org.springframework.boot:spring-boot-starter'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+        implementation 'org.springframework.boot:spring-boot-starter-aop' // AOP: 로깅 처리 자동화를 위해 사용
+
+        // Utils
+        implementation 'com.google.code.gson:gson'
 
         // Lombok
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
-        
-        // Test
+
+        // Test Dependencies
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation 'org.junit.jupiter:junit-jupiter-api'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+        testImplementation 'org.mockito:mockito-core'
+        testImplementation 'org.mockito:mockito-junit-jupiter'
+
+        // Lombok for Tests
+        testCompileOnly 'org.projectlombok:lombok'
+        testAnnotationProcessor 'org.projectlombok:lombok'
     }
-    
+
+    // Test Configuration
+    sourceSets {
+        test {
+            java {
+                srcDirs = ['src/test/java']
+            }
+        }
+    }
+
     test {
         useJUnitPlatform()
+        include '**/*Test.class'
+        testLogging {
+            events "passed", "skipped", "failed"
+        }
+        finalizedBy jacocoTestReport // 테스트 후 JaCoCo 리포트 생성
     }
+
+    jacocoTestReport {
+        dependsOn test
+        reports {
+            xml.required = true // SonarQube 분석을 위해 XML 형식 필요
+            csv.required = false
+            html.required = true
+            html.outputLocation = layout.buildDirectory.dir("jacocoHtml").get().asFile
+        }
+
+        afterEvaluate {
+            classDirectories.setFrom(files(classDirectories.files.collect {
+                fileTree(dir: it, exclude: [
+                        "**/config/**",        // 설정 클래스 제외
+                        "**/entity/**",        // 엔티티 클래스 제외
+                        "**/dto/**",           // DTO 클래스 제외
+                        "**/*Application.class", // 메인 애플리케이션 클래스 제외
+                        "**/exception/**"      // 예외 클래스 제외
+                ])
+            }))
+        }
+    }
+
 }
 
 //-- Biz와 common 모듈이 아닌 경우 인프라 관련 라이브러리 추가
@@ -42,6 +101,10 @@ configure(subprojects.findAll { !it.name.endsWith('-biz') && it.name != 'common'
         // Spring Boot
         implementation 'org.springframework.boot:spring-boot-starter-web'
         implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+        // Actuator 추가
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
         // data
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         // JWT
@@ -50,10 +113,19 @@ configure(subprojects.findAll { !it.name.endsWith('-biz') && it.name != 'common'
         implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
         runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
         runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-        // AOP: 로깅 처리 자동화를 위해 사용
-        implementation 'org.springframework.boot:spring-boot-starter-aop'
+
         // Swagger
         implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
+
+        //-- spring security test
+        testImplementation 'org.springframework.security:spring-security-test'
+
+        // Test Containers
+        testImplementation 'org.testcontainers:postgresql'
+        testImplementation 'org.testcontainers:junit-jupiter'
+
+        // WebFlux for WebMvc Testing
+        implementation 'org.springframework.boot:spring-boot-starter-webflux'
     }
 }
 

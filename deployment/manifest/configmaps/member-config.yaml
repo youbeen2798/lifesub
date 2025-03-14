@@ -1,0 +1,10 @@
+# lifesub/deployment/manifest/configmaps/member-config.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: member-config
+data:
+  SERVER_PORT: "8081"
+  POSTGRES_HOST: "member-postgresql"
+  POSTGRES_PORT: "5432"
+  POSTGRES_DB: "member"

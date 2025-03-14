@@ -1,0 +1,12 @@
+# lifesub/deployment/manifest/services/member-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: member
+spec:
+  selector:
+    app: member
+  ports:
+    - port: 80
+      targetPort: 8081
+  type: ClusterIP

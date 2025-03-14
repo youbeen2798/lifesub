@@ -1,0 +1,23 @@
+# Team Settings
+teamid=unicorn
+root_project=lifesub
+namespace=unicorn-lifesub-ns
+
+# Container Registry Settings
+registry=unicorncr.azurecr.io
+image_org=lifesub
+
+# Application Settings
+replicas=1
+allowed_origins=http://4.230.147.248
+
+# Security Settings
+jwt_secret_key=8O2HQ13etL2BWZvYOiWsJ5uWFoLi6NBUG8divYVoCgtHVvlk3dqRksMl16toztDUeBTSIuOOPvHIrYq11G2BwQ
+postgres_user=admin
+postgres_password=Passw0rd
+
+# Resource Settings
+resources_requests_cpu=256m
+resources_requests_memory=256Mi
+resources_limits_cpu=1024m
+resources_limits_memory=1024Mi

@@ -1,0 +1,346 @@
+# ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: common-config
+  namespace: ${namespace}
+data:
+  ALLOWED_ORIGINS: ${allowed_origins}
+  JPA_DDL_AUTO: update
+  JPA_SHOW_SQL: 'true'
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: member-config
+  namespace: ${namespace}
+data:
+  POSTGRES_DB: member
+  POSTGRES_HOST: member-postgresql
+  POSTGRES_PORT: '5432'
+  SERVER_PORT: '8081'
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysub-config
+  namespace: ${namespace}
+data:
+  FEE_LEVEL_ADDICT: '100000'
+  FEE_LEVEL_COLLECTOR: '50000'
+  POSTGRES_DB: mysub
+  POSTGRES_HOST: mysub-postgresql
+  POSTGRES_PORT: '5432'
+  SERVER_PORT: '8082'
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: recommend-config
+  namespace: ${namespace}
+data:
+  POSTGRES_DB: recommend
+  POSTGRES_HOST: recommend-postgresql
+  POSTGRES_PORT: '5432'
+  SERVER_PORT: '8083'
+
+---
+# Secrets
+apiVersion: v1
+kind: Secret
+metadata:
+  name: common-secret
+  namespace: ${namespace}
+stringData:
+  JWT_SECRET_KEY: ${jwt_secret_key}
+type: Opaque
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: member-secret
+  namespace: ${namespace}
+stringData:
+  JWT_ACCESS_TOKEN_VALIDITY: '3600000'
+  JWT_REFRESH_TOKEN_VALIDITY: '86400000'
+  POSTGRES_PASSWORD: ${postgres_password}
+  POSTGRES_USER: ${postgres_user}
+type: Opaque
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysub-secret
+  namespace: ${namespace}
+stringData:
+  POSTGRES_PASSWORD: ${postgres_password}
+  POSTGRES_USER: ${postgres_user}
+type: Opaque
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: recommend-secret
+  namespace: ${namespace}
+stringData:
+  POSTGRES_PASSWORD: ${postgres_password}
+  POSTGRES_USER: ${postgres_user}
+type: Opaque
+
+---
+# Deployments
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: member
+  namespace: ${namespace}
+spec:
+  replicas: ${replicas}
+  selector:
+    matchLabels:
+      app: member
+  template:
+    metadata:
+      labels:
+        app: member
+    spec:
+      containers:
+      - name: member
+        image: ${member_image_path}
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: common-config
+        - configMapRef:
+            name: member-config
+        - secretRef:
+            name: common-secret
+        - secretRef:
+            name: member-secret
+        resources:
+          requests:
+            cpu: ${resources_requests_cpu}
+            memory: ${resources_requests_memory}
+          limits:
+            cpu: ${resources_limits_cpu}
+            memory: ${resources_limits_memory}
+        ports:
+        - containerPort: 8081
+        startupProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8081
+          failureThreshold: 30
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8081
+          initialDelaySeconds: 60
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8081
+          initialDelaySeconds: 10
+          periodSeconds: 5
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysub
+  namespace: ${namespace}
+spec:
+  replicas: ${replicas}
+  selector:
+    matchLabels:
+      app: mysub
+  template:
+    metadata:
+      labels:
+        app: mysub
+    spec:
+      containers:
+      - name: mysub
+        image: ${mysub_image_path}
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: common-config
+        - configMapRef:
+            name: mysub-config
+        - secretRef:
+            name: common-secret
+        - secretRef:
+            name: mysub-secret
+        resources:
+          requests:
+            cpu: ${resources_requests_cpu}
+            memory: ${resources_requests_memory}
+          limits:
+            cpu: ${resources_limits_cpu}
+            memory: ${resources_limits_memory}
+        ports:
+        - containerPort: 8082
+        startupProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8082
+          failureThreshold: 30
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8082
+          initialDelaySeconds: 60
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8082
+          initialDelaySeconds: 10
+          periodSeconds: 5
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recommend
+  namespace: ${namespace}
+spec:
+  replicas: ${replicas}
+  selector:
+    matchLabels:
+      app: recommend
+  template:
+    metadata:
+      labels:
+        app: recommend
+    spec:
+      containers:
+      - name: recommend
+        image: ${recommend_image_path}
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: common-config
+        - configMapRef:
+            name: recommend-config
+        - secretRef:
+            name: common-secret
+        - secretRef:
+            name: recommend-secret
+        resources:
+          requests:
+            cpu: ${resources_requests_cpu}
+            memory: ${resources_requests_memory}
+          limits:
+            cpu: ${resources_limits_cpu}
+            memory: ${resources_limits_memory}
+        ports:
+        - containerPort: 8083
+        startupProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8083
+          failureThreshold: 30
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8083
+          initialDelaySeconds: 60
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8083
+          initialDelaySeconds: 10
+          periodSeconds: 5
+
+---
+# Services
+apiVersion: v1
+kind: Service
+metadata:
+  name: member
+  namespace: ${namespace}
+spec:
+  selector:
+    app: member
+  ports:
+  - port: 80
+    targetPort: 8081
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysub
+  namespace: ${namespace}
+spec:
+  selector:
+    app: mysub
+  ports:
+  - port: 80
+    targetPort: 8082
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: recommend
+  namespace: ${namespace}
+spec:
+  selector:
+    app: recommend
+  ports:
+  - port: 80
+    targetPort: 8083
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lifesub
+  namespace: ${namespace}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /member(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: member
+                port:
+                  number: 80
+          - path: /mysub(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: mysub
+                port:
+                  number: 80
+          - path: /recommend(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: recommend
+                port:
+                  number: 80

@@ -1,0 +1,82 @@
+!theme mono
+title Common Module - Class Diagram
+
+package "com.unicorn.lifesub.common" {
+    package "dto" {
+        class ApiResponse<T> {
+            -status: int
+            -message: String
+            -data: T
+            -timestamp: LocalDateTime
+            +ApiResponse(status: int, message: String, data: T)
+            +{static} success(data: T): ApiResponse<T>
+            +{static} error(errorCode: ErrorCode): ApiResponse<T>
+        }
+
+        class JwtTokenDTO {
+            -accessToken: String
+            -refreshToken: String
+        }
+    }
+
+    package "exception" {
+        class BusinessException {
+            -errorCode: ErrorCode
+            +BusinessException(errorCode: ErrorCode)
+            +getErrorCode(): ErrorCode
+        }
+
+        class InfraException {
+            -errorCode: ErrorCode
+            +InfraException(errorCode: ErrorCode)
+            +getErrorCode(): ErrorCode
+        }
+
+        enum ErrorCode {
+            INVALID_INPUT_VALUE(100, "Invalid input value")
+            INTERNAL_SERVER_ERROR(110, "Internal server error")
+            MEMBER_NOT_FOUND(200, "Member not found")
+            INVALID_CREDENTIALS(210, "Invalid credentials")
+            TOKEN_EXPIRED(220, "Token expired")
+            SIGNATURE_VERIFICATION_EXCEPTION(230, "서명 검증 실패")
+            ALGORITHM_MISMATCH_EXCEPTION(240, "알고리즘 불일치")
+            INVALID_CLAIM_EXCEPTION(250, "유효하지 않은 클레임")
+            SUBSCRIPTION_NOT_FOUND(300, "Subscription not found")
+            ALREADY_SUBSCRIBED(310, "Already subscribed to this service")
+            NO_SPENDING_DATA(400, "No spending data found")
+            NO_RECOMMENDATION_DATA(410, "추천 구독 카테고리 없음")
+            UNDIFINED_ERROR(0, "정의되지 않은 에러")
+            --
+            -status: int
+            -message: String
+        }
+    }
+
+    package "entity" {
+        abstract class BaseTimeEntity {
+            -createdAt: LocalDateTime
+            -updatedAt: LocalDateTime
+        }
+    }
+
+    package "aop" {
+        class LoggingAspect {
+            -gson: Gson
+            +logMethodStart(joinPoint: JoinPoint): void
+            +logMethodEnd(joinPoint: JoinPoint, result: Object): void
+            +logMethodException(joinPoint: JoinPoint, exception: Exception): void
+            -getArgumentString(args: Object[]): String
+            -getResultString(result: Object): String
+        }
+    }
+
+    package "config" {
+        class JpaConfig {
+        }
+    }
+}
+
+' Relationships
+BusinessException --> ErrorCode
+InfraException --> ErrorCode
+LoggingAspect ..> ApiResponse : uses
