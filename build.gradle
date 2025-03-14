@@ -134,3 +134,4 @@ configure(subprojects.findAll { it.name.endsWith('-biz') || it.name == 'common' 
     bootJar.enabled = false
     jar.enabled = true
 }
+
