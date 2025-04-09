@@ -5,4 +5,8 @@ metadata:
 data:
   JPA_DDL_AUTO: update
   JPA_SHOW_SQL: "true"
+<<<<<<< HEAD
   ALLOWED_ORIGINS: "http://localhost:18080,http://localhost:18081,http://20.249.184.6"
+=======
+  ALLOWED_ORIGINS: "http://localhost:18080,http://localhost:18081,http://20.214.113.12"
+>>>>>>> 1ea06faa5d92eae36ec9d161158eb1314eaff732

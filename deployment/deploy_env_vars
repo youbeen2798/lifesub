@@ -8,8 +8,8 @@ registry=unicorncr.azurecr.io
 image_org=lifesub
 
 # Application Settings
-replicas=2
-allowed_origins=http://4.230.156.229
+replicas=1
+allowed_origins=http://20.214.113.12
 
 # Security Settings
 jwt_secret_key=8O2HQ13etL2BWZvYOiWsJ5uWFoLi6NBUG8divYVoCgtHVvlk3dqRksMl16toztDUeBTSIuOOPvHIrYq11G2BwQ

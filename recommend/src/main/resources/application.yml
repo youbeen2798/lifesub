@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:recommend}
     username: ${POSTGRES_USER:admin}
-    password: ${POSTGRES_PASSWORD:Passw0rd}
+    password: ${POSTGRES_PASSWORD:Hi5Jessica!}
     driver-class-name: org.postgresql.Driver
   # JPA 설정
   jpa:
