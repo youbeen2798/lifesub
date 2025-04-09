@@ -1,4 +1,4 @@
-# lifesub/deployment/manifest/deployments/member-deployment.yaml
+# hiondal/deployment/manifest/deployments/member-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -13,9 +13,11 @@ spec:
       labels:
         app: member
     spec:
+      imagePullSecrets:
+        - name: dockerhub
       containers:
         - name: member
-          image: dg0200cr.azurecr.io/lifesub/member:1.0.0
+          image: docker.io/hiondal/member:1.0.0
           imagePullPolicy: Always
           ports:
             - containerPort: 8081

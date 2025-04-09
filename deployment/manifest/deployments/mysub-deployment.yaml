@@ -1,4 +1,4 @@
-# lifesub/deployment/manifest/deployments/mysub-deployment.yaml
+# hiondal/deployment/manifest/deployments/mysub-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -13,9 +13,11 @@ spec:
       labels:
         app: mysub
     spec:
+      imagePullSecrets:
+        - name: dockerhub
       containers:
         - name: mysub
-          image: dg0200cr.azurecr.io/lifesub/mysub:1.0.0
+          image: docker.io/hiondal/mysub:1.0.0
           imagePullPolicy: Always
           ports:
             - containerPort: 8082

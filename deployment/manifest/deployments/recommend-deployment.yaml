@@ -1,4 +1,4 @@
-# lifesub/deployment/manifest/deployments/recommend-deployment.yaml
+# hiondal/deployment/manifest/deployments/recommend-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -13,9 +13,11 @@ spec:
       labels:
         app: recommend
     spec:
+      imagePullSecrets:
+        - name: dockerhub
       containers:
         - name: recommend
-          image: dg0200cr.azurecr.io/lifesub/recommend:1.0.0
+          image: docker.io/hiondal/recommend:1.0.0
           imagePullPolicy: Always
           ports:
             - containerPort: 8083
