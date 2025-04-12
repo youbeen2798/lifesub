@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.unicorn.lifesub.member.test.integration.service.MemberServiceIntegrationTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2025-02-14T14:45:53" hostname="ihaegyeong-ui-MacBookAir.local" time="1.771">
-  <properties/>
-  <testcase name="로그아웃 처리 성공" classname="com.unicorn.lifesub.member.test.integration.service.MemberServiceIntegrationTest" time="1.518"/>
-  <testcase name="유효한 자격증명으로 로그인 성공" classname="com.unicorn.lifesub.member.test.integration.service.MemberServiceIntegrationTest" time="0.211"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
