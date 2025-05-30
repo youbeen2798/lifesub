@@ -20,41 +20,21 @@ podTemplate(
                             envVar(key: 'TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE', value: '/run/podman/podman.sock'),
                             envVar(key: 'TESTCONTAINERS_RYUK_DISABLED', value: 'true')
                         ]),
-        containerTemplate(name: 'azure-cli', image: 'hiondal/azure-kubectl:latest', command: 'cat', ttyEnabled: true),
-        containerTemplate(name: 'envsubst', image: "hiondal/envsubst", command: 'sleep', args: '1h'),
         containerTemplate(name: 'git', image: 'alpine/git:latest', command: 'cat', ttyEnabled: true)
     ],
     volumes: [
         emptyDirVolume(mountPath: '/home/gradle/.gradle', memory: false),
-        emptyDirVolume(mountPath: '/root/.azure', memory: false),
         emptyDirVolume(mountPath: '/run/podman', memory: false)
     ]
 ) {
     node(PIPELINE_ID) {
         def props
         def imageTag = getImageTag()
-        def manifest = "deploy.yaml"
-        def namespace
         def services = ['member', 'mysub', 'recommend']
-        def MANIFEST_REPO = "https://github.com/cna-bootcamp/lifesub-manifest.git"
-        def MANIFEST_BRANCH = "main"
 
         stage("Get Source") {
             checkout scm
             props = readProperties file: "deployment/deploy_env_vars"
-            namespace = "${props.namespace}"
-        }
-
-        stage("Setup AKS") {
-            container('azure-cli') {
-                withCredentials([azureServicePrincipal('azure-credentials')]) {
-                    sh """
-                        az login --service-principal -u \$AZURE_CLIENT_ID -p \$AZURE_CLIENT_SECRET -t \$AZURE_TENANT_ID
-                        az aks get-credentials --resource-group ictcoe-edu --name ${props.teamid}-aks --overwrite-existing
-                        kubectl create namespace ${namespace} --dry-run=client -o yaml | kubectl apply -f -
-                    """
-                }
-            }
         }
 
         stage('Build Applications & SonarQube Analysis') {
@@ -76,7 +56,6 @@ testcontainers.reuse.enable=true'''
                     echo '${testContainersConfig}' > recommend/src/test/resources/testcontainers.properties
                 """
 
-                // Member 서비스 빌드 및 SonarQube 분석
                 withSonarQubeEnv('SonarQube') {
                     sh """
                         chmod +x gradlew
@@ -86,24 +65,24 @@ testcontainers.reuse.enable=true'''
 
                         # Member 서비스
                         ./gradlew :member:test :member:jacocoTestReport :member:sonar \
-                            -Dsonar.projectKey=lifesub-member \
-                            -Dsonar.projectName=lifesub-member \
+                            -Dsonar.projectKey=lifesub-member-${props.teamid} \
+                            -Dsonar.projectName=lifesub-member-${props.teamid} \
                             -Dsonar.java.binaries=build/classes/java/main \
                             -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml \
                             -Dsonar.exclusions=**/config/**,**/entity/**,**/dto/**,**/*Application.class,**/exception/**
 
                         # Recommend 서비스
                         ./gradlew :recommend:test :recommend:jacocoTestReport :recommend:sonar \
-                            -Dsonar.projectKey=lifesub-recommend \
-                            -Dsonar.projectName=lifesub-recommend \
+                            -Dsonar.projectKey=lifesub-recommend-${props.teamid} \
+                            -Dsonar.projectName=lifesub-recommend-${props.teamid} \
                             -Dsonar.java.binaries=build/classes/java/main \
                             -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml \
                             -Dsonar.exclusions=**/config/**,**/entity/**,**/dto/**,**/*Application.class,**/exception/**
 
-                        # Mysub 서비스 (biz & infra 구조)
+                        # Mysub 서비스
                         ./gradlew :mysub-infra:test :mysub-infra:jacocoTestReport :mysub-infra:sonar \
-                            -Dsonar.projectKey=lifesub-mysub \
-                            -Dsonar.projectName=lifesub-mysub \
+                            -Dsonar.projectKey=lifesub-mysub-${props.teamid} \
+                            -Dsonar.projectName=lifesub-mysub-${props.teamid} \
                             -Dsonar.java.binaries=build/classes/java/main \
                             -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml \
                             -Dsonar.exclusions=**/config/**,**/entity/**,**/dto/**,**/*Application.class,**/exception/**
@@ -150,30 +129,31 @@ testcontainers.reuse.enable=true'''
 
         stage('Update Manifest Repository') {
             container('git') {
-                // 임시 디렉토리 생성
-                sh "mkdir -p /tmp/manifests"
-
-                // Clone manifest repository
-                withCredentials([usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                withCredentials([usernamePassword(
+                    credentialsId: 'github-credentials-unicorn',
+                    usernameVariable: 'GIT_USERNAME',
+                    passwordVariable: 'GIT_PASSWORD'
+                )]) {
                     sh """
-                        git config --global user.email "jenkins@example.com"
-                        git config --global user.name "Jenkins Pipeline"
-
-                        git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/cna-bootcamp/lifesub-manifest.git /tmp/manifests
-                        cd /tmp/manifests
-
-                        # Update image tags in the appropriate YAML files
-                        for service in ${services.join(' ')}; do
-                            # 백엔드 서비스 이미지 태그 업데이트
-                            if [ -f lifesub/deployments/\${service}-deployment.yaml ]; then
-                                sed -i "s|image: ${props.registry}/${props.image_org}/\${service}:.*|image: ${props.registry}/${props.image_org}/\${service}:${imageTag}|g" lifesub/deployments/\${service}-deployment.yaml
+                        git config --global user.email "jenkins@company.com"
+                        git config --global user.name "Jenkins"
+                        
+                        # Clone manifest repository
+                        git clone https://\$GIT_USERNAME:\$GIT_PASSWORD@github.com/youbeen2798/lifesub-manifest.git
+                        cd lifesub-manifest
+                        
+                        # Update each service deployment
+                        for service in member mysub recommend; do
+                            if [ -f "lifesub/\${service}/\${service}-deployment.yaml" ]; then
+                                sed -i "s|image: .*/${props.image_org}/\${service}:.*|image: ${props.registry}/${props.image_org}/\${service}:${imageTag}|g" lifesub/\${service}/\${service}-deployment.yaml
+                                echo "Updated \${service} image to ${imageTag}"
                             fi
                         done
-
+                        
                         # Commit and push changes
                         git add .
-                        git commit -m "Update backend service image tags to ${imageTag}" || true
-                        git push
+                        git commit -m "Update backend services image tag to ${imageTag}" || echo "No changes to commit"
+                        git push origin main
                     """
                 }
             }
